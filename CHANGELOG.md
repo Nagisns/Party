@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.0] - 2026-10-23
+## [0.1.0] - 2026-10-24
 
 This is the first prerelease for version 0.1.0.
 
