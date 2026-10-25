@@ -62,12 +62,17 @@ async def help(interaction: discord.Interaction) -> None:
 
     await interaction.response.send_message(embed=embed)
 
-@bot.tree.command(name="ping",description=app_commands.locale_str("Check bot latency"))
+@bot.tree.command(name="ping",description=app_commands.locale_str("Check bot latency."))
 @app_commands.checks.cooldown(rate=1, per=5.0)
 async def ping(interaction: discord.Interaction) -> None:
-    latency = round(bot.latency * 1000)
+    try:
+        latency: int = round(bot.latency * 1000)
+        message = translate(interaction, "Pong! {latency}ms")
+    except OverflowError:
+        message = translate(interaction, "Error: Could not measure ping.")
+        await interaction.response.send_message(message)
+        return
 
-    message = translate(interaction, "Pong! {latency}ms")
     await interaction.response.send_message(message.format(latency=latency))
 
 if __name__ == "__main__":
