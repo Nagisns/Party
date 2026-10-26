@@ -7,12 +7,13 @@ from discord import app_commands
 
 JA_TRANSLATIONS: dict[str, str] = {
     "Display a list of available commands.": "利用可能なコマンドの一覧を表示します。",
-    "Check bot latency": "Botの応答速度を確認します。",
+    "Check bot latency.": "Botの応答速度を確認します。",
     "Party Commands": "Party コマンド一覧",
     "An unexpected error occurred.": "予期しないエラーが発生しました。",
     "You do not have permission to use this command.": "このコマンドを実行する権限がありません。",
     "This command is on cooldown.": "このコマンドはクールダウン中です。",
     "Pong! {latency}ms": "応答速度: {latency}ms",
+    "Error: Could not measure ping.": "Pingが測定できませんでした。"
 }
 
 def translate(interaction: discord.Interaction, message: str) -> str:
