@@ -44,7 +44,7 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
     if interaction.response.is_done():
         await interaction.followup.send(message, ephemeral=True)
     else:
-        await interaction.response.send_message(message, ephemeral=True,)
+        await interaction.response.send_message(message, ephemeral=True)
 
 @bot.event
 async def on_ready() -> None:
@@ -53,12 +53,12 @@ async def on_ready() -> None:
 @bot.tree.command(name="help", description=app_commands.locale_str("Display a list of available commands."))
 @app_commands.checks.cooldown(rate=1, per=5.0)
 async def help(interaction: discord.Interaction) -> None:
-    embed = discord.Embed(title=translate(interaction, "Party Commands"), color=discord.Color.green(),)
+    embed = discord.Embed(title=translate(interaction, "Party Commands"), color=discord.Color.green())
 
     for command in bot.tree.get_commands():
         description = translate(interaction, command.description)
 
-        embed.add_field(name=command.name, value=description, inline=False,)
+        embed.add_field(name=command.name, value=description, inline=False)
 
     await interaction.response.send_message(embed=embed)
 
