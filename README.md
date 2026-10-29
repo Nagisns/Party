@@ -3,8 +3,8 @@
 A Discord bot built with Python and `discord.py`, featuring slash commands
 and Japanese localization.
 
-The current release, **0.1.0**, is the first prerelease for version
-0.1.0. See the [changelog](CHANGELOG.md) for release details.
+The current release is **0.1.1**. The project is in prerelease development.
+See the [changelog](CHANGELOG.md) for release history.
 
 ## Features
 
@@ -12,8 +12,8 @@ The current release, **0.1.0**, is the first prerelease for version
 - **Ping:** Shows the bot's WebSocket latency in milliseconds.
 - **Japanese Localization:** Displays command descriptions and responses in
   Japanese when the user's Discord language is set to Japanese.
-- **Error Messages:** Sends localized command error messages visible only to
-  the user who ran the command.
+- **Error Messages:** The shared slash command error handler sends localized
+  error messages visible only to the user who ran the command.
 
 ## Commands
 
@@ -27,11 +27,11 @@ no arguments.
 
 ## Requirements
 
-- Python 3.10 or later, required by the type annotations used in the source
+- Python 3.15 or later, as specified in `pyproject.toml`
 - A Discord bot application and its bot token
 - A Discord server where you can install the bot
-- `discord.py` 2.x
-- `python-dotenv`
+- `discord.py` 2.7.1 or later
+- `python-dotenv` 1.2.4 or later
 
 ## Setup
 
@@ -43,7 +43,14 @@ directory.
 ### 2. Install the dependencies
 
 ```bash
-python -m pip install "discord.py>=2,<3" python-dotenv
+python -m pip install "discord.py>=2.7.1" "python-dotenv>=1.2.4"
+```
+
+These version requirements match `pyproject.toml`. To install the locked
+versions from `uv.lock` instead, use uv:
+
+```bash
+uv sync --locked --no-dev
 ```
 
 ### 3. Create and configure a Discord bot
@@ -89,6 +96,13 @@ From the project directory, run:
 python src/bot.py
 ```
 
+If you installed the dependencies with uv, run the bot in the project's
+virtual environment:
+
+```bash
+uv run --locked --no-dev python src/bot.py
+```
+
 During startup, the bot registers its Japanese translator and synchronizes
 its global slash commands. The console reports the number of synchronized
 commands and the logged-in bot.
@@ -115,14 +129,17 @@ responses, and error messages. Other Discord language settings use English.
 Messages without a Japanese translation also use the original English text.
 The command names remain `/help` and `/ping` in both languages.
 
-Normal command responses are visible in the channel. The shared slash
-command error handler sends error messages only to the user who ran the
-command, using a follow-up message if the interaction has already received
-a response. Command errors are also printed to the console.
+Normal command responses are visible in the channel. If measuring ping
+raises `OverflowError`, the failure message is also visible in the channel.
+The shared slash command error handler sends error messages only to the
+user who ran the command, using a follow-up message if the interaction has
+already received a response. Unexpected command errors are logged to the
+console with tracebacks.
 
 The error handler has dedicated messages for missing permissions and
 command cooldowns, plus a general message for unexpected errors. Neither
-command currently has custom permission checks or cooldowns configured.
+command currently has custom permission checks. Each command has a per-user
+cooldown of one use every five seconds.
 
 ## License
 
