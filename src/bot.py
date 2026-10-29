@@ -4,6 +4,7 @@
 
 import os
 import sys
+import logging
 
 import discord
 from discord import app_commands
@@ -30,7 +31,6 @@ bot: MyBot = MyBot(command_prefix="!", intents=intents)
 
 @bot.tree.error
 async def on_app_command_error(interaction: discord.Interaction, error: app_commands.AppCommandError) -> None:
-    print(f"Command error: {error}")
 
     message = "An unexpected error occurred."
 
@@ -38,6 +38,8 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
         message = "You do not have permission to use this command."
     elif isinstance(error, app_commands.CommandOnCooldown):
         message = "This command is on cooldown."
+    else:
+        logging.error("Command error: %s", error, exc_info=error)
 
     message = translate(interaction, message)
 
@@ -76,4 +78,4 @@ async def ping(interaction: discord.Interaction) -> None:
     await interaction.response.send_message(message.format(latency=latency))
 
 if __name__ == "__main__":
-    bot.run(TOKEN)
+    bot.run(TOKEN, root_logger=True)
