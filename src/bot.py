@@ -64,7 +64,7 @@ async def help(interaction: discord.Interaction) -> None:
 
     await interaction.response.send_message(embed=embed)
 
-@bot.tree.command(name="ping",description=app_commands.locale_str("Check bot latency."))
+@bot.tree.command(name="ping", description=app_commands.locale_str("Check bot latency."))
 @app_commands.checks.cooldown(rate=1, per=5.0)
 async def ping(interaction: discord.Interaction) -> None:
     try:
