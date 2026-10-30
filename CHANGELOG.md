@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.1.2] - 2026-10-31
+
+### Added
+
+- Added the `/roll` command with a required `maximum` argument from 2 to 1000. It rolls one die, displays an embed with a result from 1 through `maximum`, and allows three uses per user every ten seconds.
+- Added a description for the `/roll` command's `maximum` option and Japanese translations for the command description, option description, and result embed title.
+
+### Changed
+
+- Grouped Japanese translations into common, help, ping, and roll dictionaries, merging them into `JA_TRANSLATIONS` while preserving existing translations and lookup behavior.
+- Normalized spacing in the `/ping` command decorator.
+- Updated the README for three slash commands, their arguments and cooldowns, Japanese localization, installation permissions, and manual testing.
+
+### Fixed
+
+- Disabled discord.py's built-in `!help` prefix command, which did not use the slash command cooldowns. Use `/help` for the command list.
+- Handled `ValueError` from `NaN` WebSocket latency in `/ping`, returning the localized measurement failure message already used for `OverflowError`.
+
 ## [0.1.1] - 2026-10-29
 
 ### Added

@@ -4,6 +4,7 @@ This project is currently in pre-release development.
 
 | Version | Supported |
 | ------- | --------- |
+| 0.1.2   | ✅        |
 | 0.1.1   | ✅        |
 | 0.1.0   | ✅        |
 
