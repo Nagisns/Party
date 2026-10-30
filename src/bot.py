@@ -71,7 +71,7 @@ async def ping(interaction: discord.Interaction) -> None:
     try:
         latency: int = round(bot.latency * 1000)
         message = translate(interaction, "Pong! {latency}ms")
-    except OverflowError:
+    except (OverflowError, ValueError):
         message = translate(interaction, "Error: Could not measure ping.")
         await interaction.response.send_message(message)
         return
