@@ -53,18 +53,6 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
 async def on_ready() -> None:
     print(f"Logged in as {bot.user}")
 
-@bot.tree.command(name="help", description=app_commands.locale_str("Display a list of available commands."))
-@app_commands.checks.cooldown(rate=1, per=5.0)
-async def help(interaction: discord.Interaction) -> None:
-    embed = discord.Embed(title=translate(interaction, "Party Commands"), color=discord.Color.green())
-
-    for command in bot.tree.get_commands():
-        description = translate(interaction, command.description)
-
-        embed.add_field(name=command.name, value=description, inline=False)
-
-    await interaction.response.send_message(embed=embed)
-
 @bot.tree.command(name="ping", description=app_commands.locale_str("Check bot latency."))
 @app_commands.checks.cooldown(rate=1, per=5.0)
 async def ping(interaction: discord.Interaction) -> None:

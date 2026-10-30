@@ -8,6 +8,7 @@ from localization import JapaneseTranslator
 
 class MyBot(commands.Bot):
     async def setup_hook(self) -> None:
+        await self.load_extension("cogs.help")
         await self.tree.set_translator(JapaneseTranslator())
 
         synced = await self.tree.sync()
