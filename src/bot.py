@@ -53,19 +53,6 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
 async def on_ready() -> None:
     print(f"Logged in as {bot.user}")
 
-@bot.tree.command(name="ping", description=app_commands.locale_str("Check bot latency."))
-@app_commands.checks.cooldown(rate=1, per=5.0)
-async def ping(interaction: discord.Interaction) -> None:
-    try:
-        latency: int = round(bot.latency * 1000)
-        message = translate(interaction, "Pong! {latency}ms")
-    except (OverflowError, ValueError):
-        message = translate(interaction, "Error: Could not measure ping.")
-        await interaction.response.send_message(message)
-        return
-
-    await interaction.response.send_message(message.format(latency=latency))
-
 @bot.tree.command(name="roll", description=app_commands.locale_str("Roll a die with the specified number of sides."))
 @app_commands.describe(maximum=app_commands.locale_str("Number of sides on the die (2-1000)."))
 @app_commands.checks.cooldown(rate=3, per=10.0)
