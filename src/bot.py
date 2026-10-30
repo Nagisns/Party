@@ -28,7 +28,7 @@ except KeyError:
     sys.exit(1)
 
 intents: discord.Intents = discord.Intents.default()
-bot: MyBot = MyBot(command_prefix="!", intents=intents)
+bot: MyBot = MyBot(command_prefix="!", intents=intents, help_command=None)
 
 @bot.tree.error
 async def on_app_command_error(interaction: discord.Interaction, error: app_commands.AppCommandError) -> None:
