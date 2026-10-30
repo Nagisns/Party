@@ -79,6 +79,7 @@ async def ping(interaction: discord.Interaction) -> None:
     await interaction.response.send_message(message.format(latency=latency))
 
 @bot.tree.command(name="roll", description=app_commands.locale_str("Roll a die with the specified number of sides."))
+@app_commands.describe(maximum=app_commands.locale_str("Number of sides on the die (2-1000)."))
 @app_commands.checks.cooldown(rate=3, per=10.0)
 async def roll(interaction: discord.Interaction, maximum: app_commands.Range[int, 2, 1000]) -> None:
 
