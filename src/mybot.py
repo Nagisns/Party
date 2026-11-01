@@ -3,6 +3,7 @@
 # See the LICENSE file for details.
 
 from pkgutil import iter_modules
+from types import ModuleType
 
 from discord.ext import commands
 
@@ -11,12 +12,18 @@ from localization import JapaneseTranslator
 
 class MyBot(commands.Bot):
     async def setup_hook(self) -> None:
-        extensions = sorted(
-            module.name
-            for module in iter_modules(cogs.__path__, prefix=f"{cogs.__name__}.")
-            if not module.name.rsplit(".", 1)[-1].startswith("_")
-        )
-        for extension in extensions:
+        def _get_extensions(package: ModuleType) -> list[str]:
+            return sorted(
+                module.name
+                for module in iter_modules(
+                    package.__path__, prefix=f"{package.__name__}."
+                )
+                if not module.name.rsplit(".", 1)[-1].startswith("_")
+            )
+
+        extensions_cogs: list[str] = _get_extensions(cogs)
+
+        for extension in extensions_cogs:
             await self.load_extension(extension)
 
         await self.tree.set_translator(JapaneseTranslator())
