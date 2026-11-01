@@ -5,10 +5,9 @@
 import os
 import sys
 import logging
-from typing import Optional
 
 import discord
-from discord import app_commands, TextChannel
+from discord import app_commands
 from dotenv import load_dotenv
 
 from mybot import MyBot
@@ -49,23 +48,5 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
     else:
         await interaction.response.send_message(message, ephemeral=True)
 
-@bot.event
-async def on_guild_join(guild: discord.Guild) -> None:
-
-    embed: discord.Embed = discord.Embed(
-        title="Thanks for inviting me!", 
-        description="Hello, everyone!\nI'm happy to be here. Check out my commands to see how I can help.", 
-        color=discord.Color.green(),
-    )
-    channel: Optional[TextChannel] = guild.system_channel
-
-    if channel is not None:
-        try:
-            await channel.send(embed=embed)
-        except discord.Forbidden:
-            logging.warning(f"Missing permissions to send greeting in guild: {guild.id}")
-        except discord.HTTPException:
-            logging.exception(f"Failed to send greeting in guild: {guild.id}")
-    
 if __name__ == "__main__":
     bot.run(TOKEN, root_logger=True)
