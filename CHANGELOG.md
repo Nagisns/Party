@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0] - 2026-11-01
+
+### Added
+
+- Added an English welcome embed sent to the server's system channel when the bot joins. The greeting is skipped when no system channel is configured.
+- Added handling for greeting delivery failures: permission errors are logged as warnings, and other HTTP errors are logged with tracebacks.
+
+### Changed
+
+- Moved the `/help`, `/ping`, and `/roll` commands into separate Cog extensions under `src/cogs/`.
+- Replaced the hardcoded extension list with automatic discovery of modules and packages directly inside `cogs`. Extensions load in alphabetical order, and names beginning with `_` are excluded.
+- Added copyright notices and MIT license references to the Cog modules.
+- Updated the README with greeting behavior and permissions, instructions for adding Cog extensions, and manual verification steps.
+
 ## [0.1.2] - 2026-10-31
 
 ### Added

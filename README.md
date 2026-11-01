@@ -3,7 +3,7 @@
 A Discord bot built with Python and `discord.py`, featuring slash commands
 and Japanese localization.
 
-The current release is **0.1.2**. The project is in prerelease development.
+The current release is **0.2.0**. The project is in prerelease development.
 See the [changelog](CHANGELOG.md) for release history.
 
 ## Features
@@ -11,10 +11,14 @@ See the [changelog](CHANGELOG.md) for release history.
 - **Help:** Displays an embed listing the available slash commands.
 - **Ping:** Shows the bot's WebSocket latency in milliseconds.
 - **Roll:** Rolls a die with 2 to 1000 sides and displays the result in an embed.
+- **Welcome Message:** Sends an English welcome embed to the server's system
+  channel when the bot joins, if a system channel is configured and the bot
+  has permission to send it.
 - **Japanese Localization:** Displays command and argument descriptions and
   responses in Japanese when the user's Discord language is set to Japanese.
 - **Error Messages:** The shared slash command error handler sends localized
   error messages visible only to the user who ran the command.
+- **Automatic Cog Loading:** Discovers and loads command extensions at startup.
 
 ## Commands
 
@@ -86,6 +90,14 @@ whose permission rules differ from ordinary channel message sends. See
 [Discord's interaction and webhook permission notes](https://docs.discord.com/developers/change-log#changes-to-bot-permissions-for-interactions-and-webhooks).
 The bot does not need **Administrator** permission.
 
+To receive the welcome embed, configure a system channel in the server's
+settings and allow the bot **View Channel**, **Send Messages**, and **Embed
+Links** in that channel. The greeting uses a normal channel message, so the
+[channel message permissions](https://docs.discord.com/developers/resources/message#create-message)
+apply. Check both the bot's roles and the channel's permission overwrites.
+If no system channel is configured, the greeting is skipped. Permission
+errors are logged as warnings; other HTTP failures are logged with tracebacks.
+
 The bot uses the default Gateway intents. The current slash commands do not
 require **Message Content Intent**, **Server Members Intent**, or
 **Presence Intent**; all three privileged intents can remain disabled.
@@ -125,13 +137,28 @@ virtual environment:
 uv run --locked --no-dev python src/bot.py
 ```
 
-During startup, the bot registers its Japanese translator and synchronizes
-its global slash commands. The console reports the number of synchronized
-commands and the logged-in bot.
+During startup, the bot discovers and loads Cog extensions, registers its
+Japanese translator, and synchronizes its global slash commands. The console
+reports the number of synchronized commands and the logged-in bot.
 
 Once the bot is running, use `/help`, `/ping`, or `/roll maximum:6` in your
 server. The `!help` prefix command is disabled; use `/help` for the command
 list.
+
+## Adding Commands
+
+Commands are organized as Cog extensions in `src/cogs/`. At startup, the bot
+discovers modules and packages directly inside `cogs` and loads them in
+alphabetical order. Names beginning with `_` are excluded, so use that prefix
+for helper modules that should not be loaded as extensions.
+
+To add a command, create a module such as `src/cogs/example.py`, define its
+Cog and commands, and expose an `async def setup(bot)` entry point that calls
+`await bot.add_cog(...)`. Restart the bot to discover the new extension and
+synchronize its commands; no changes to `src/mybot.py` are needed.
+
+Every discovered extension must provide the setup entry point. If an
+extension fails to load, startup stops before command synchronization.
 
 ## Testing
 
@@ -155,6 +182,19 @@ manually after setup:
    embed titles, ping response, and cooldown messages.
 8. Send `!help` and confirm that the bot does not respond to that prefix
    command.
+9. With the bot running, invite it to a test server with a configured system
+   channel and the required greeting permissions. Confirm that the English
+   welcome embed appears in that channel.
+10. Check a test server without a system channel and one where the bot cannot
+    send messages to the system channel. Confirm that joining produces no
+    greeting in those cases and that a permission failure is logged as a
+    warning. The bot should continue responding to slash commands.
+
+When adding an extension, restart the bot and confirm that its commands are
+registered without editing `src/mybot.py`. Check that helper modules whose
+names begin with `_` are not loaded as extensions. To verify these steps,
+use a test bot and server so command synchronization does not affect an
+existing deployment.
 
 ## Localization and Error Handling
 
@@ -163,6 +203,11 @@ and roll embed titles, ping responses, and error messages. Other Discord
 language settings use English. Messages without a Japanese translation
 also use the original English text. The command names remain `/help`,
 `/ping`, and `/roll` in both languages.
+
+The welcome embed is always in English and is visible in the system channel.
+It is sent when the bot joins a server. Greeting permission errors are logged
+as warnings; other HTTP delivery failures are logged with tracebacks. These
+failures do not stop the bot from serving commands.
 
 Normal command responses are visible in the channel. If measuring ping
 raises `OverflowError` or `ValueError`, including for `NaN` latency, the
