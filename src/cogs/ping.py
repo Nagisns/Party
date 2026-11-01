@@ -1,3 +1,7 @@
+# Copyright (c) 2026 Nagi(Nagisns)
+# Licensed under the MIT License.
+# See the LICENSE file for details.
+
 import discord
 from discord import app_commands
 from discord.ext import commands
