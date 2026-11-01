@@ -7,6 +7,7 @@ from types import ModuleType
 
 from discord.ext import commands
 
+import events
 import cogs
 from localization import JapaneseTranslator
 
@@ -22,11 +23,21 @@ class MyBot(commands.Bot):
             )
 
         extensions_cogs: list[str] = _get_extensions(cogs)
+        extensions_events: list[str] = _get_extensions(events)
 
         for extension in extensions_cogs:
             await self.load_extension(extension)
 
+        for extension in extensions_events:
+            await self.load_extension(extension)
+
         await self.tree.set_translator(JapaneseTranslator())
+
+        event_count: int = sum(
+            len(cog.get_listeners())
+            for cog in self.cogs.values()
+        )
+        print(f"Registered {event_count} event listeners.")
 
         synced = await self.tree.sync()
         print(f"Synced {len(synced)} commands.")

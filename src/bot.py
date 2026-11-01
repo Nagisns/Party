@@ -50,10 +50,6 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
         await interaction.response.send_message(message, ephemeral=True)
 
 @bot.event
-async def on_ready() -> None:
-    print(f"Logged in as {bot.user}")
-
-@bot.event
 async def on_guild_join(guild: discord.Guild) -> None:
 
     embed: discord.Embed = discord.Embed(
