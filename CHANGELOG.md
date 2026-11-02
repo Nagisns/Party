@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.2.1] - 2026-11-03
+
+### Added
+
+- Added Japanese translations for welcome embed titles and descriptions when the server's preferred locale is Japanese. Other locales use English.
+- Added startup output showing the total number of registered Cog event listeners.
+- Added Material Icon Theme folder icon associations for `cogs` and `events` in VS Code.
+
+### Changed
+
+- Moved `on_ready` and `on_guild_join` into separate Cog extensions under `src/events/`.
+- Extracted a shared package discovery helper and extended automatic loading to event extensions. Command extensions load first, followed by event extensions, with alphabetical ordering within each package and underscore-prefixed names excluded.
+- Extracted `translate_for_locale()` so welcome messages and interaction responses share translation lookup and fallback behavior.
+- Limited support to the latest release in the current and immediately preceding minor series. The previous series receives security fixes only; `0.2.1` replaces `0.2.0` as the supported release in the current series.
+- Added copyright notices and MIT license references to the event modules.
+- Updated release metadata and the README for event extension loading, listener counts, and welcome message localization.
+
 ## [0.2.0] - 2026-11-01
 
 ### Added

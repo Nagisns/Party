@@ -3,7 +3,7 @@
 A Discord bot built with Python and `discord.py`, featuring slash commands
 and Japanese localization.
 
-The current release is **0.2.0**. The project is in prerelease development.
+The current release is **0.2.1**. The project is in prerelease development.
 See the [changelog](CHANGELOG.md) for release history.
 
 ## Features
@@ -11,14 +11,16 @@ See the [changelog](CHANGELOG.md) for release history.
 - **Help:** Displays an embed listing the available slash commands.
 - **Ping:** Shows the bot's WebSocket latency in milliseconds.
 - **Roll:** Rolls a die with 2 to 1000 sides and displays the result in an embed.
-- **Welcome Message:** Sends an English welcome embed to the server's system
-  channel when the bot joins, if a system channel is configured and the bot
-  has permission to send it.
+- **Welcome Message:** Sends a welcome embed to the server's system channel
+  when the bot joins, if a system channel is configured and the bot has
+  permission to send it. The title and description use Japanese when the
+  server's preferred locale is Japanese, and English for other locales.
 - **Japanese Localization:** Displays command and argument descriptions and
   responses in Japanese when the user's Discord language is set to Japanese.
 - **Error Messages:** The shared slash command error handler sends localized
   error messages visible only to the user who ran the command.
-- **Automatic Cog Loading:** Discovers and loads command extensions at startup.
+- **Automatic Extension Loading:** Discovers and loads command and event
+  extensions at startup.
 
 ## Commands
 
@@ -137,9 +139,12 @@ virtual environment:
 uv run --locked --no-dev python src/bot.py
 ```
 
-During startup, the bot discovers and loads Cog extensions, registers its
-Japanese translator, and synchronizes its global slash commands. The console
-reports the number of synchronized commands and the logged-in bot.
+During startup, the bot discovers and loads command extensions from
+`src/cogs/` and event extensions from `src/events/`, registers its Japanese
+translator, and synchronizes its global slash commands. The console reports
+the total number of registered Cog event listeners, the number of synchronized
+commands, and the logged-in bot. The listener count includes each registered
+listener, including multiple listeners for the same event.
 
 Once the bot is running, use `/help`, `/ping`, or `/roll maximum:6` in your
 server. The `!help` prefix command is disabled; use `/help` for the command
@@ -160,13 +165,28 @@ synchronize its commands; no changes to `src/mybot.py` are needed.
 Every discovered extension must provide the setup entry point. If an
 extension fails to load, startup stops before command synchronization.
 
+## Adding Event Listeners
+
+Event listeners are organized as Cog extensions in `src/events/`. Mark each
+listener with `commands.Cog.listener()` and expose an `async def setup(bot)`
+entry point that registers the Cog with `await bot.add_cog(...)`. Use a unique
+Cog name, and remove the original handler when moving an event from `bot.py`
+to avoid running both handlers.
+
+At startup, command extensions load first, followed by event extensions.
+Modules and packages directly inside each directory load in alphabetical
+order, and names beginning with `_` are excluded. Restart the bot to discover
+new event extensions; no changes to `src/mybot.py` are needed. Event listeners
+are registered when their Cogs are added and do not require `tree.sync()`.
+
 ## Testing
 
 This prerelease does not include an automated test suite. To check the bot
 manually after setup:
 
-1. Start the bot and confirm that the console reports three synchronized
-   commands and a successful login.
+1. Start the bot and confirm that the console reports
+   `Registered 2 event listeners.` and `Synced 3 commands.`,
+   followed by a successful login.
 2. Run `/help` and confirm that the embed lists `/help`, `/ping`, and `/roll`
    with their descriptions.
 3. Run `/ping` and confirm that the response includes latency in milliseconds.
@@ -183,18 +203,21 @@ manually after setup:
 8. Send `!help` and confirm that the bot does not respond to that prefix
    command.
 9. With the bot running, invite it to a test server with a configured system
-   channel and the required greeting permissions. Confirm that the English
-   welcome embed appears in that channel.
+   channel and the required greeting permissions. Confirm that exactly one
+   welcome embed appears in that channel. Repeat with a server whose preferred
+   locale is Japanese and one with another locale; check that the title and
+   description use Japanese and English respectively.
 10. Check a test server without a system channel and one where the bot cannot
     send messages to the system channel. Confirm that joining produces no
     greeting in those cases and that a permission failure is logged as a
     warning. The bot should continue responding to slash commands.
 
-When adding an extension, restart the bot and confirm that its commands are
-registered without editing `src/mybot.py`. Check that helper modules whose
-names begin with `_` are not loaded as extensions. To verify these steps,
-use a test bot and server so command synchronization does not affect an
-existing deployment.
+When adding an extension, restart the bot and confirm that its commands or
+event listeners are registered without editing `src/mybot.py`. Check that
+helper modules whose names begin with `_` are not loaded as extensions. For a
+new event listener, check the listener count and trigger the corresponding
+event. To verify these steps, use a test bot and server so command
+synchronization does not affect an existing deployment.
 
 ## Localization and Error Handling
 
@@ -204,10 +227,15 @@ language settings use English. Messages without a Japanese translation
 also use the original English text. The command names remain `/help`,
 `/ping`, and `/roll` in both languages.
 
-The welcome embed is always in English and is visible in the system channel.
-It is sent when the bot joins a server. Greeting permission errors are logged
-as warnings; other HTTP delivery failures are logged with tracebacks. These
-failures do not stop the bot from serving commands.
+The welcome embed is visible in the system channel and is sent when the bot
+joins a server. Its title and description use Japanese when
+`guild.preferred_locale` is Japanese (`ja`), and English for other locales.
+Discord defines this as a Community guild's preferred locale and defaults
+it to `en-US`; see the
+[guild structure documentation](https://docs.discord.com/developers/resources/guild#guild-object-guild-structure).
+Greeting permission errors are logged as warnings; other HTTP delivery
+failures are logged with tracebacks. These failures do not stop the bot from
+serving commands.
 
 Normal command responses are visible in the channel. If measuring ping
 raises `OverflowError` or `ValueError`, including for `NaN` latency, the
