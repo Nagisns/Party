@@ -28,15 +28,30 @@ JA_ROLL: dict[str, str] = {
     "Rolling result: {result}": "サイコロの結果: {result}"
 }
 
+JA_GUILD_JOIN: dict[str, str] = {
+    "Thanks for inviting me!": "招待ありがとうございます！",
+    (
+    "Hello, everyone!\n"
+    "I'm happy to be here. Check out my commands to see how I can help."
+    ): (
+    "みなさん、こんにちは！\n"
+    "このサーバーに参加できてうれしいです。"
+    "コマンド一覧を確認して、ぜひ使ってみてください。"
+    ),
+}
+
 JA_TRANSLATIONS: dict[str, str] = (
-    JA_COMMON | JA_HELP | JA_PING | JA_ROLL
+    JA_COMMON | JA_HELP | JA_PING | JA_ROLL | JA_GUILD_JOIN
 )
 
-def translate(interaction: discord.Interaction, message: str) -> str:
-    if interaction.locale == discord.Locale.japanese:
+def translate_for_locale(locale: discord.Locale, message: str) -> str:
+    if locale == discord.Locale.japanese:
         return JA_TRANSLATIONS.get(message, message)
 
     return message
+
+def translate(interaction: discord.Interaction, message: str) -> str:
+    return translate_for_locale(interaction.locale, message)
 
 class JapaneseTranslator(app_commands.Translator):
     async def translate(self, string: app_commands.locale_str, locale: discord.Locale, context: app_commands.TranslationContext) -> str | None:

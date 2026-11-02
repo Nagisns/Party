@@ -5,6 +5,8 @@ import discord
 from discord import TextChannel
 from discord.ext import commands
 
+from localization import translate_for_locale
+
 class GuildJoinCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot: commands.Bot = bot
@@ -12,9 +14,13 @@ class GuildJoinCog(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self, guild: discord.Guild) -> None:
 
+        locale: discord.Locale = guild.preferred_locale
         embed: discord.Embed = discord.Embed(
-            title="Thanks for inviting me!", 
-            description="Hello, everyone!\nI'm happy to be here. Check out my commands to see how I can help.", 
+            title=translate_for_locale(locale, "Thanks for inviting me!"),
+            description=translate_for_locale(
+                locale, 
+                "Hello, everyone!\n" "I'm happy to be here. Check out my commands to see how I can help.",
+            ),
             color=discord.Color.green(),
         )
         channel: Optional[TextChannel] = guild.system_channel
