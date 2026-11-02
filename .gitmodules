@@ -1,0 +1,3 @@
+[submodule "translation_checker"]
+	path = translation_checker
+	url = https://github.com/Nagisns/translation_checker.git
