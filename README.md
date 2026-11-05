@@ -1,5 +1,7 @@
 # Party
 
+[English](README.md) | [日本語](README.ja.md)
+
 A Discord bot built with Python and `discord.py`, featuring slash commands
 and Japanese localization.
 
