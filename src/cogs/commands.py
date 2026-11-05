@@ -2,6 +2,8 @@
 # Licensed under the MIT License.
 # See the LICENSE file for details.
 
+import asyncio
+
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -12,6 +14,7 @@ class CommandsView(discord.ui.View):
     def __init__(self, bot: MyBot) -> None:
         super().__init__(timeout=180)
         self.page: int = 0
+        self._page_lock = asyncio.Lock()
         self.bot: MyBot = bot
         self.MIN_PAGES: int = 0
         self.MAX_PAGES: int = 4
@@ -96,27 +99,31 @@ class CommandsView(discord.ui.View):
 
     @discord.ui.button(emoji="⬅️", style=discord.ButtonStyle.primary)
     async def previous_page(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
+        await interaction.response.defer()
+        async with self._page_lock:
 
-        self.page -= 1
+            self.page -= 1
 
-        if self.page < self.MIN_PAGES:
-            self.page = self.MAX_PAGES - 1
+            if self.page < self.MIN_PAGES:
+                self.page = self.MAX_PAGES - 1
 
-        embed: discord.Embed = self.create_embed()
+            embed: discord.Embed = self.create_embed()
 
-        await interaction.response.edit_message(embed=embed)
+            await interaction.edit_original_response(embed=embed)
 
     @discord.ui.button(emoji="➡️", style=discord.ButtonStyle.primary)
     async def next_page(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
+        await interaction.response.defer()
+        async with self._page_lock:
 
-        self.page += 1
+            self.page += 1
 
-        if self.page == self.MAX_PAGES:
-            self.page = self.MIN_PAGES
+            if self.page == self.MAX_PAGES:
+                self.page = self.MIN_PAGES
 
-        embed: discord.Embed = self.create_embed()
+            embed: discord.Embed = self.create_embed()
 
-        await interaction.response.edit_message(embed=embed)
+            await interaction.edit_original_response(embed=embed)
 
 class CommandsCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
