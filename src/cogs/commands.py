@@ -13,6 +13,7 @@ class CommandsView(discord.ui.View):
         super().__init__(timeout=180)
         self.page: int = 0
         self.bot: MyBot = bot
+        self.MIN_PAGES: int = 0
         self.MAX_PAGES: int = 4
 
     def create_embed(self) -> discord.Embed:
@@ -92,6 +93,30 @@ class CommandsView(discord.ui.View):
             )
 
         raise ValueError(f"Unsupported page: {self.page}")
+
+    @discord.ui.button(emoji="⬅️", style=discord.ButtonStyle.primary)
+    async def previous_page(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
+
+        self.page -= 1
+
+        if self.page < self.MIN_PAGES:
+            self.page = self.MAX_PAGES - 1
+
+        embed: discord.Embed = self.create_embed()
+
+        await interaction.response.edit_message(embed=embed)
+
+    @discord.ui.button(emoji="➡️", style=discord.ButtonStyle.primary)
+    async def next_page(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
+
+        self.page += 1
+
+        if self.page == self.MAX_PAGES:
+            self.page = self.MIN_PAGES
+
+        embed: discord.Embed = self.create_embed()
+
+        await interaction.response.edit_message(embed=embed)
 
 class CommandsCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
