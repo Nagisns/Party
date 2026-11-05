@@ -129,7 +129,10 @@ class CommandsCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="commands", description=app_commands.locale_str("..."))
+    @app_commands.command(
+            name="commands", 
+            description=app_commands.locale_str("Browse command details using navigation buttons."),
+        )
     @app_commands.checks.cooldown(rate=1, per=5.0)
     async def commands(self, interaction: discord.Interaction) -> None:
 
