@@ -2,7 +2,9 @@
 # Licensed under the MIT License.
 # See the LICENSE file for details.
 
+import logging
 import asyncio
+from asyncio import Lock
 
 import discord
 from discord import app_commands
@@ -12,14 +14,34 @@ from mybot import MyBot
 from localization import translate_for_locale
 
 class CommandsView(discord.ui.View):
-    def __init__(self, bot: MyBot, locale: discord.Locale) -> None:
+    def __init__(self, bot: MyBot, interaction: discord.Interaction) -> None:
         super().__init__(timeout=180)
         self.page: int = 0
-        self._page_lock = asyncio.Lock()
+        self._page_lock: Lock = asyncio.Lock()
         self.bot: MyBot = bot
-        self.locale: discord.Locale = locale
+        self.locale: discord.Locale = interaction.locale
+        self._last_interaction: discord.Interaction = interaction
         self.MIN_PAGES: int = 0
         self.MAX_PAGES: int = 4
+
+    async def interaction_check(self, interaction: discord.Interaction) -> bool:
+        self._last_interaction = interaction
+        return True
+
+    async def on_timeout(self):
+        async with self._page_lock:
+            for item in self.children:
+                if isinstance(item, discord.ui.Button):
+                    item.disabled = True
+
+            notice = translate_for_locale(self.locale, "This guide has expired. Run `/commands` again.")
+
+            try:
+                await self._last_interaction.edit_original_response(content=notice, view=self)
+            except discord.NotFound:
+                return
+            except discord.HTTPException:
+                logging.exception("Failed to disable command guide buttons.")
 
     def create_embed(self) -> discord.Embed:
         def translate(message: str) -> str:
@@ -141,7 +163,7 @@ class CommandsCog(commands.Cog):
     @app_commands.checks.cooldown(rate=1, per=5.0)
     async def commands(self, interaction: discord.Interaction) -> None:
 
-        view: CommandsView = CommandsView(self.bot, interaction.locale)
+        view: CommandsView = CommandsView(self.bot, interaction)
         embed: discord.Embed = view.create_embed()
 
         await interaction.response.send_message(embed=embed, view=view)
