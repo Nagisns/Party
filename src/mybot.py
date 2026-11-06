@@ -2,6 +2,7 @@
 # Licensed under the MIT License.
 # See the LICENSE file for details.
 
+import logging
 from pkgutil import iter_modules
 from types import ModuleType
 
@@ -37,7 +38,7 @@ class MyBot(commands.Bot):
             len(cog.get_listeners())
             for cog in self.cogs.values()
         )
-        print(f"Registered {event_count} event listeners.")
+        logging.info(f"Registered {event_count} event listeners.")
 
         synced = await self.tree.sync()
-        print(f"Synced {len(synced)} commands.")
+        logging.info(f"Synced {len(synced)} commands.")
