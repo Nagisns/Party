@@ -9,17 +9,22 @@ from discord import app_commands
 from discord.ext import commands
 
 from mybot import MyBot
+from localization import translate_for_locale
 
 class CommandsView(discord.ui.View):
-    def __init__(self, bot: MyBot) -> None:
+    def __init__(self, bot: MyBot, locale: discord.Locale) -> None:
         super().__init__(timeout=180)
         self.page: int = 0
         self._page_lock = asyncio.Lock()
         self.bot: MyBot = bot
+        self.locale: discord.Locale = locale
         self.MIN_PAGES: int = 0
         self.MAX_PAGES: int = 4
 
     def create_embed(self) -> discord.Embed:
+        def translate(message: str) -> str:
+            return translate_for_locale(self.locale, message)
+
         def _embed_template(title: str, description: str, page: int) -> discord.Embed:
             embed: discord.Embed = discord.Embed(
                 title=title,
@@ -32,8 +37,8 @@ class CommandsView(discord.ui.View):
         #Home Page
         if self.page == 0:
             return _embed_template(
-                title="Commands List",
-                description=(
+                title=translate("Commands List"),
+                description=translate(
                     "Use the buttons below to view command details.\n\n"
                     "**Table of Contents**\n\n"
                     "**1. `/help`**\n"
@@ -49,8 +54,8 @@ class CommandsView(discord.ui.View):
         #Help Command Page
         if self.page == 1:
             return _embed_template(
-                title="Help Command",
-                description=(
+                title=translate("Help Command"),
+                description=translate(
                     "Display a list of available commands.\n\n"
                     "**Response**\n"
                     "An embed listing command names and descriptions.\n\n"
@@ -65,8 +70,8 @@ class CommandsView(discord.ui.View):
         #Ping Command Page
         if self.page == 2:
             return _embed_template(
-                title=("Ping Command"),
-                description=(
+                title=translate("Ping Command"),
+                description=translate(
                     "Check the bot's latency in milliseconds (ms).\n\n"
                     "**Response**\n"
                     "`Pong! <latency>ms`\n\n"
@@ -81,8 +86,8 @@ class CommandsView(discord.ui.View):
         #Roll Command Page
         if self.page == 3:
             return _embed_template(
-                title="Roll Command",
-                description=(
+                title=translate("Roll Command"),
+                description=translate(
                     "Roll a die with the specified number of sides.\n\n"
                     "**Response**\n"
                     "An embed showing `Rolling result: <result>`.\n"
@@ -136,7 +141,7 @@ class CommandsCog(commands.Cog):
     @app_commands.checks.cooldown(rate=1, per=5.0)
     async def commands(self, interaction: discord.Interaction) -> None:
 
-        view: CommandsView = CommandsView(self.bot)
+        view: CommandsView = CommandsView(self.bot, interaction.locale)
         embed: discord.Embed = view.create_embed()
 
         await interaction.response.send_message(embed=embed, view=view)
