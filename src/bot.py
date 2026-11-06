@@ -43,10 +43,13 @@ async def on_app_command_error(interaction: discord.Interaction, error: app_comm
 
     message = translate(interaction, message)
 
-    if interaction.response.is_done():
-        await interaction.followup.send(message, ephemeral=True)
-    else:
-        await interaction.response.send_message(message, ephemeral=True)
+    try:
+        if interaction.response.is_done():
+            await interaction.followup.send(message, ephemeral=True)
+        else:
+            await interaction.response.send_message(message, ephemeral=True)
+    except discord.HTTPException:
+        logging.exception("Failed to send app command error message.")
 
 if __name__ == "__main__":
     bot.run(TOKEN, root_logger=True)
