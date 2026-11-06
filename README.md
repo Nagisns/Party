@@ -5,11 +5,13 @@
 A Discord bot built with Python and `discord.py`, featuring slash commands
 and Japanese localization.
 
-The current release is **0.2.1**. The project is in prerelease development.
+The current release is **0.3.0**. The project is in prerelease development.
 See the [changelog](CHANGELOG.md) for release history.
 
 ## Features
 
+- **Command Reference:** Browse command details across four embed pages using
+  previous and next buttons.
 - **Help:** Displays an embed listing the available slash commands.
 - **Ping:** Shows the bot's WebSocket latency in milliseconds.
 - **Roll:** Rolls a die with 2 to 1000 sides and displays the result in an embed.
@@ -28,12 +30,13 @@ See the [changelog](CHANGELOG.md) for release history.
 
 | Command | Description |
 |---|---|
+| `/commands` | Displays a command reference with navigation buttons. |
 | `/help` | Displays an embed listing the registered slash commands and their descriptions. |
 | `/ping` | Displays the bot's WebSocket latency in milliseconds. |
 | `/roll` | Rolls one die with the specified number of sides and displays the result in an embed. |
 
-All three commands can be selected from Discord's slash command picker.
-The `/help` and `/ping` commands take no arguments. The `/roll` command
+All four commands can be selected from Discord's slash command picker.
+The `/commands`, `/help`, and `/ping` commands take no arguments. The `/roll` command
 requires `maximum`, an integer from **2 to 1000** specifying the number of
 sides. The result is an integer from **1 through `maximum`**, inclusive.
 
@@ -42,6 +45,15 @@ For example, to roll a six-sided die:
 ```text
 /roll maximum:6
 ```
+
+The `/commands` reference opens with a table of contents, followed by detail
+pages for `/help`, `/ping`, and `/roll`. Use the left and right arrow buttons
+to move between pages. Navigation wraps from the first page to the last and
+from the last page to the first. Page changes update the same message in the
+channel, and anyone who can view it can use its buttons.
+
+The buttons time out after 180 seconds of inactivity. Run `/commands` again
+to open a new reference. Each user can run `/commands` once every five seconds.
 
 ## Requirements
 
@@ -148,9 +160,9 @@ the total number of registered Cog event listeners, the number of synchronized
 commands, and the logged-in bot. The listener count includes each registered
 listener, including multiple listeners for the same event.
 
-Once the bot is running, use `/help`, `/ping`, or `/roll maximum:6` in your
-server. The `!help` prefix command is disabled; use `/help` for the command
-list.
+Once the bot is running, try `/commands`, `/help`, `/ping`, and `/roll maximum:6`
+in your server. The `!help` prefix command is disabled; use `/help` for the
+command list or `/commands` for command details.
 
 ## Adding Commands
 
@@ -187,29 +199,37 @@ This prerelease does not include an automated test suite. To check the bot
 manually after setup:
 
 1. Start the bot and confirm that the console reports
-   `Registered 2 event listeners.` and `Synced 3 commands.`,
+   `Registered 2 event listeners.` and `Synced 4 commands.`,
    followed by a successful login.
-2. Run `/help` and confirm that the embed lists `/help`, `/ping`, and `/roll`
-   with their descriptions.
-3. Run `/ping` and confirm that the response includes latency in milliseconds.
-4. Run `/roll maximum:2` and `/roll maximum:1000`. Confirm that each result
+2. Run `/help` and confirm that the embed lists `/commands`, `/help`, `/ping`,
+   and `/roll` with their descriptions.
+3. Run `/commands` and confirm that the reference opens at `page: 1/4`.
+   Use both arrow buttons to visit all four pages, including navigation from
+   the first page to the last and back. Check the command details and page
+   numbers, and click the buttons quickly to check that updates stay consistent.
+   After 180 seconds without button activity, confirm that navigation stops
+   responding; run `/commands` again to open a new reference.
+4. Run `/ping` and confirm that the response includes latency in milliseconds.
+5. Run `/roll maximum:2` and `/roll maximum:1000`. Confirm that each result
    appears in an embed and is between 1 and the specified maximum, inclusive.
-5. Confirm that the command picker requires `maximum` and rejects values
+6. Confirm that the command picker requires `maximum` and rejects values
    below 2 or above 1000.
-6. Wait for any earlier cooldowns to expire. Run `/help` or `/ping` twice
-   within five seconds, and `/roll` four times within ten seconds. Confirm
-   that exceeding each command's limit returns an error visible only to you.
-7. Set your Discord language to Japanese and repeat the commands. Check the
-   command descriptions, the `maximum` option description, help and roll
-   embed titles, ping response, and cooldown messages.
-8. Send `!help` and confirm that the bot does not respond to that prefix
+7. Wait for any earlier cooldowns to expire. Run each of `/commands`, `/help`,
+   and `/ping` twice within five seconds, and `/roll` four times within ten
+   seconds. Confirm that exceeding each command's limit returns an error
+   visible only to you.
+8. Set your Discord language to Japanese and repeat the commands. Check the
+   command descriptions, the `maximum` option description, command reference
+   page titles and descriptions on all four pages, help and roll embed titles,
+   ping response, and cooldown messages.
+9. Send `!help` and confirm that the bot does not respond to that prefix
    command.
-9. With the bot running, invite it to a test server with a configured system
-   channel and the required greeting permissions. Confirm that exactly one
-   welcome embed appears in that channel. Repeat with a server whose preferred
-   locale is Japanese and one with another locale; check that the title and
-   description use Japanese and English respectively.
-10. Check a test server without a system channel and one where the bot cannot
+10. With the bot running, invite it to a test server with a configured system
+    channel and the required greeting permissions. Confirm that exactly one
+    welcome embed appears in that channel. Repeat with a server whose preferred
+    locale is Japanese and one with another locale; check that the title and
+    description use Japanese and English respectively.
+11. Check a test server without a system channel and one where the bot cannot
     send messages to the system channel. Confirm that joining produces no
     greeting in those cases and that a permission failure is logged as a
     warning. The bot should continue responding to slash commands.
@@ -223,11 +243,13 @@ synchronization does not affect an existing deployment.
 
 ## Localization and Error Handling
 
-Japanese users receive Japanese command and argument descriptions, help
-and roll embed titles, ping responses, and error messages. Other Discord
-language settings use English. Messages without a Japanese translation
-also use the original English text. The command names remain `/help`,
-`/ping`, and `/roll` in both languages.
+Japanese users receive Japanese command and argument descriptions, command
+reference page titles and descriptions, help and roll embed titles, ping
+responses, and error messages. Other Discord language settings use English.
+Messages without a Japanese translation also use the original English text.
+The command names remain `/commands`, `/help`, `/ping`, and `/roll` in both
+languages. The `/commands` reference keeps the language of the user who
+opened it throughout navigation, including when another user presses a button.
 
 The welcome embed is visible in the system channel and is sent when the bot
 joins a server. Its title and description use Japanese when
@@ -249,8 +271,8 @@ console with tracebacks.
 
 The error handler has dedicated messages for missing permissions and
 command cooldowns, plus a general message for unexpected errors. None of
-the commands currently has custom permission checks. Each of `/help` and
-`/ping` has a per-user cooldown of one use every five seconds. The `/roll`
+the commands currently has custom permission checks. Each of `/commands`,
+`/help`, and `/ping` has a per-user cooldown of one use every five seconds. The `/roll`
 command allows three uses per user every ten seconds. Each command has its
 own cooldown.
 

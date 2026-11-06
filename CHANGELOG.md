@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.3.0] - 2026-11-06
+
+### Added
+
+- Added the `/commands` slash command with a four-page reference: a table of contents and detail pages for `/help`, `/ping`, and `/roll`. It takes no arguments and allows one use per user every five seconds.
+- Added previous and next buttons that wrap between the first and last reference pages, with a 180-second inactivity timeout.
+- Added Japanese translations for the `/commands` description and reference page titles and descriptions, using the invoking user's Discord language throughout navigation.
+- Added a Japanese README and language links in both README files.
+- Added `translation_checker` as a Git submodule for AST-based detection of direct `translate(...)` calls, plus a VS Code folder icon association.
+
+### Changed
+
+- Updated release metadata and both README files for four slash commands, command reference navigation, localization, cooldowns, and manual verification.
+- Made `0.3.x` the current series and retained `0.2.1` for security fixes only. Ended support for the `0.1.x` series.
+
+### Fixed
+
+- Serialized command reference page updates to keep page state and the displayed embed consistent during overlapping button interactions.
+
 ## [0.2.1] - 2026-11-03
 
 ### Added

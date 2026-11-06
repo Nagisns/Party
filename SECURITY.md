@@ -7,16 +7,19 @@ in the immediately preceding minor series are supported.
 
 A newer patch release replaces the earlier releases in the same series.
 When a new minor series is released, support for the oldest series ends.
-For example, releasing `0.3.0` ends support for the `0.1.x` series.
+With the release of `0.3.0`, support for the `0.1.x` series has ended.
 
 New features and general bug fixes target the current series. The previous
 series is maintained for security fixes only.
 
+The current series is `0.3.x`; `0.2.1` receives security fixes only.
+
 | Version | Supported |
 | ------- | --------- |
+| 0.3.0   | ✅        |
 | 0.2.1   | ✅        |
 | 0.2.0   | ❌        |
-| 0.1.2   | ✅        |
+| 0.1.2   | ❌        |
 | 0.1.1   | ❌        |
 | 0.1.0   | ❌        |
 
