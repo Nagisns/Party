@@ -35,7 +35,7 @@ class CommandsView(discord.ui.View):
                 if isinstance(item, discord.ui.Button):
                     item.disabled = True
 
-            notice = translate_for_locale(self.locale, "This guide has expired. Run `/commands` again.")
+            notice: str = translate_for_locale(self.locale, "This guide has expired. Run `/commands` again.")
 
             try:
                 await self._last_interaction.edit_original_response(content=notice, view=self)
@@ -176,7 +176,7 @@ class CommandsView(discord.ui.View):
 
 class CommandsCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
-        self.bot = bot
+        self.bot: commands.Bot = bot
 
     @app_commands.command(
             name="commands", 
