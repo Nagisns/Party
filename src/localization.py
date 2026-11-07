@@ -15,6 +15,7 @@ JA_COMMON: dict[str, str] = {
 
 JA_COMMANDS: dict[str, str] = {
     "Browse command details using navigation buttons.": "ボタンを使ってコマンドの詳細を確認します。",
+    "This guide has expired. Run `/commands` again.": "このガイドの有効期限が切れました。`/commands` をもう一度実行してください。",
     "Commands List": "コマンド一覧",
     dedent("""
         Use the buttons below to view command details.
