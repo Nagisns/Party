@@ -5,6 +5,7 @@
 import logging
 import asyncio
 from asyncio import Lock
+from textwrap import dedent
 
 import discord
 from discord import app_commands
@@ -61,14 +62,20 @@ class CommandsView(discord.ui.View):
             return _embed_template(
                 title=translate("Commands List"),
                 description=translate(
-                    "Use the buttons below to view command details.\n\n"
-                    "**Table of Contents**\n\n"
-                    "**1. `/help`**\n"
-                    "View available commands and their descriptions.\n\n"
-                    "**2. `/ping`**\n"
-                    "Check the bot's latency in milliseconds (ms).\n\n"
-                    "**3. `/roll`**\n"
-                    "Roll a die with 2 to 1,000 sides."
+                    dedent("""
+                        Use the buttons below to view command details.
+
+                        **Table of Contents**
+
+                        **1. `/help`**
+                        View available commands and their descriptions.
+
+                        **2. `/ping`**
+                        Check the bot's latency in milliseconds (ms).
+
+                        **3. `/roll`**
+                        Roll a die with 2 to 1,000 sides.
+                    """).strip()
                 ),
                 page=self.page + 1,
             )
@@ -78,13 +85,18 @@ class CommandsView(discord.ui.View):
             return _embed_template(
                 title=translate("Help Command"),
                 description=translate(
-                    "Display a list of available commands.\n\n"
-                    "**Response**\n"
-                    "An embed listing command names and descriptions.\n\n"
-                    "**Parameters**\n"
-                    "None.\n\n"
-                    "**Cooldown**\n"
-                    "Once every 5 seconds."
+                    dedent("""
+                        Display a list of available commands.
+
+                        **Response**
+                        An embed listing command names and descriptions.
+
+                        **Parameters**
+                        None.
+
+                        **Cooldown**
+                        Once every 5 seconds.
+                    """).strip()
                 ),
                 page=self.page + 1,
             )
@@ -94,13 +106,18 @@ class CommandsView(discord.ui.View):
             return _embed_template(
                 title=translate("Ping Command"),
                 description=translate(
-                    "Check the bot's latency in milliseconds (ms).\n\n"
-                    "**Response**\n"
-                    "`Pong! <latency>ms`\n\n"
-                    "**Parameters**\n"
-                    "None.\n\n"
-                    "**Cooldown**\n"
-                    "Once every 5 seconds."
+                    dedent("""
+                        Check the bot's latency in milliseconds (ms).
+
+                        **Response**
+                        `Pong! <latency>ms`
+
+                        **Parameters**
+                        None.
+
+                        **Cooldown**
+                        Once every 5 seconds.
+                    """).strip()
                 ),
                 page=self.page + 1,
             )
@@ -110,14 +127,19 @@ class CommandsView(discord.ui.View):
             return _embed_template(
                 title=translate("Roll Command"),
                 description=translate(
-                    "Roll a die with the specified number of sides.\n\n"
-                    "**Response**\n"
-                    "An embed showing `Rolling result: <result>`.\n"
-                    "The result ranges from 1 to `maximum` (inclusive).\n\n"
-                    "**Parameters**\n"
-                    "`maximum` (required): Number of sides, from 2 to 1,000.\n\n"
-                    "**Cooldown**\n"
-                    "Up to 3 uses every 10 seconds."
+                    dedent("""
+                        Roll a die with the specified number of sides.
+
+                        **Response**
+                        An embed showing `Rolling result: <result>`.
+                        The result ranges from 1 to `maximum` (inclusive).
+
+                        **Parameters**
+                        `maximum` (required): Number of sides, from 2 to 1,000.
+
+                        **Cooldown**
+                        Up to 3 uses every 10 seconds.
+                    """).strip()
                 ),
                 page=self.page + 1,
             )

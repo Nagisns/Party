@@ -2,6 +2,8 @@
 # Licensed under the MIT License.
 # See the LICENSE file for details.
 
+from textwrap import dedent
+
 import discord
 from discord import app_commands
 
@@ -14,81 +16,107 @@ JA_COMMON: dict[str, str] = {
 JA_COMMANDS: dict[str, str] = {
     "Browse command details using navigation buttons.": "ボタンを使ってコマンドの詳細を確認します。",
     "Commands List": "コマンド一覧",
-    (
-        "Use the buttons below to view command details.\n\n"
-        "**Table of Contents**\n\n"
-        "**1. `/help`**\n"
-        "View available commands and their descriptions.\n\n"
-        "**2. `/ping`**\n"
-        "Check the bot's latency in milliseconds (ms).\n\n"
-        "**3. `/roll`**\n"
-        "Roll a die with 2 to 1,000 sides."
-    ): (
-        "下のボタンでコマンドの詳細を確認できます。\n\n"
-        "**目次**\n\n"
-        "**1. `/help`**\n"
-        "利用可能なコマンドとその説明を表示します。\n\n"
-        "**2. `/ping`**\n"
-        "Botの応答速度をミリ秒（ms）で確認します。\n\n"
-        "**3. `/roll`**\n"
-        "2〜1,000面のサイコロを1回振ります。"
-    ),
+    dedent("""
+        Use the buttons below to view command details.
+
+        **Table of Contents**
+
+        **1. `/help`**
+        View available commands and their descriptions.
+
+        **2. `/ping`**
+        Check the bot's latency in milliseconds (ms).
+
+        **3. `/roll`**
+        Roll a die with 2 to 1,000 sides.
+    """).strip(): dedent("""
+        下のボタンでコマンドの詳細を確認できます。
+
+        **目次**
+
+        **1. `/help`**
+        利用可能なコマンドとその説明を表示します。
+
+        **2. `/ping`**
+        Botの応答速度をミリ秒（ms）で確認します。
+
+        **3. `/roll`**
+        2〜1,000面のサイコロを1回振ります。
+    """).strip(),
     "Help Command": "/help コマンド",
-    (
-        "Display a list of available commands.\n\n"
-        "**Response**\n"
-        "An embed listing command names and descriptions.\n\n"
-        "**Parameters**\n"
-        "None.\n\n"
-        "**Cooldown**\n"
-        "Once every 5 seconds."
-    ): (
-        "利用可能なコマンドの一覧を表示します。\n\n"
-        "**応答**\n"
-        "コマンド名と説明を一覧にした埋め込みメッセージを表示します。\n\n"
-        "**引数**\n"
-        "なし。\n\n"
-        "**クールダウン**\n"
-        "5秒に1回使用できます。"
-    ),
+    dedent("""
+        Display a list of available commands.
+
+        **Response**
+        An embed listing command names and descriptions.
+
+        **Parameters**
+        None.
+
+        **Cooldown**
+        Once every 5 seconds.
+    """).strip(): dedent("""
+        利用可能なコマンドの一覧を表示します。
+
+        **応答**
+        コマンド名と説明を一覧にした埋め込みメッセージを表示します。
+
+        **引数**
+        なし。
+
+        **クールダウン**
+        5秒に1回使用できます。
+    """).strip(),
     "Ping Command": "/ping コマンド",
-    (
-        "Check the bot's latency in milliseconds (ms).\n\n"
-        "**Response**\n"
-        "`Pong! <latency>ms`\n\n"
-        "**Parameters**\n"
-        "None.\n\n"
-        "**Cooldown**\n"
-        "Once every 5 seconds."
-    ): (
-        "Botの応答速度をミリ秒（ms）で確認します。\n\n"
-        "**応答**\n"
-        "`応答速度: <latency>ms`\n\n"
-        "**引数**\n"
-        "なし。\n\n"
-        "**クールダウン**\n"
-        "5秒に1回使用できます。"
-    ),
+    dedent("""
+        Check the bot's latency in milliseconds (ms).
+
+        **Response**
+        `Pong! <latency>ms`
+
+        **Parameters**
+        None.
+
+        **Cooldown**
+        Once every 5 seconds.
+    """).strip(): dedent("""
+        Botの応答速度をミリ秒（ms）で確認します。
+
+        **応答**
+        `応答速度: <latency>ms`
+
+        **引数**
+        なし。
+
+        **クールダウン**
+        5秒に1回使用できます。
+    """).strip(),
     "Roll Command": "/roll コマンド",
-    (
-        "Roll a die with the specified number of sides.\n\n"
-        "**Response**\n"
-        "An embed showing `Rolling result: <result>`.\n"
-        "The result ranges from 1 to `maximum` (inclusive).\n\n"
-        "**Parameters**\n"
-        "`maximum` (required): Number of sides, from 2 to 1,000.\n\n"
-        "**Cooldown**\n"
-        "Up to 3 uses every 10 seconds."
-    ): (
-        "指定した面数のサイコロを1回振ります。\n\n"
-        "**応答**\n"
-        "`サイコロの結果: <result>` を埋め込みメッセージで表示します。\n"
-        "結果は1から `maximum` まで（両端を含む）の整数です。\n\n"
-        "**引数**\n"
-        "`maximum`（必須）: サイコロの面数。2〜1,000で指定します。\n\n"
-        "**クールダウン**\n"
-        "10秒間に最大3回使用できます。"
-    ),
+    dedent("""
+        Roll a die with the specified number of sides.
+
+        **Response**
+        An embed showing `Rolling result: <result>`.
+        The result ranges from 1 to `maximum` (inclusive).
+
+        **Parameters**
+        `maximum` (required): Number of sides, from 2 to 1,000.
+
+        **Cooldown**
+        Up to 3 uses every 10 seconds.
+    """).strip(): dedent("""
+        指定した面数のサイコロを1回振ります。
+
+        **応答**
+        `サイコロの結果: <result>` を埋め込みメッセージで表示します。
+        結果は1から `maximum` まで（両端を含む）の整数です。
+
+        **引数**
+        `maximum`（必須）: サイコロの面数。2〜1,000で指定します。
+
+        **クールダウン**
+        10秒間に最大3回使用できます。
+    """).strip(),
 }
 
 JA_HELP: dict[str, str] = {
