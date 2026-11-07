@@ -5,7 +5,7 @@
 A Discord bot built with Python and `discord.py`, featuring slash commands
 and Japanese localization.
 
-The current release is **0.3.0**. The project is in prerelease development.
+The current release is **0.3.1**. The project is in prerelease development.
 See the [changelog](CHANGELOG.md) for release history.
 
 ## Features
@@ -52,8 +52,10 @@ to move between pages. Navigation wraps from the first page to the last and
 from the last page to the first. Page changes update the same message in the
 channel, and anyone who can view it can use its buttons.
 
-The buttons time out after 180 seconds of inactivity. Run `/commands` again
-to open a new reference. Each user can run `/commands` once every five seconds.
+After 180 seconds of inactivity, the navigation buttons are disabled and the
+message shows an expiration notice in the language of the user who opened
+the reference. Run `/commands` again to open a new reference. Each user can
+run `/commands` once every five seconds.
 
 ## Requirements
 
@@ -159,6 +161,7 @@ translator, and synchronizes its global slash commands. The console reports
 the total number of registered Cog event listeners, the number of synchronized
 commands, and the logged-in bot. The listener count includes each registered
 listener, including multiple listeners for the same event.
+The listener and synchronized command counts are written as `INFO` logs.
 
 Once the bot is running, try `/commands`, `/help`, `/ping`, and `/roll maximum:6`
 in your server. The `!help` prefix command is disabled; use `/help` for the
@@ -198,7 +201,7 @@ are registered when their Cogs are added and do not require `tree.sync()`.
 This prerelease does not include an automated test suite. To check the bot
 manually after setup:
 
-1. Start the bot and confirm that the console reports
+1. Start the bot and confirm that the console shows `INFO` logs containing
    `Registered 2 event listeners.` and `Synced 4 commands.`,
    followed by a successful login.
 2. Run `/help` and confirm that the embed lists `/commands`, `/help`, `/ping`,
@@ -207,8 +210,9 @@ manually after setup:
    Use both arrow buttons to visit all four pages, including navigation from
    the first page to the last and back. Check the command details and page
    numbers, and click the buttons quickly to check that updates stay consistent.
-   After 180 seconds without button activity, confirm that navigation stops
-   responding; run `/commands` again to open a new reference.
+   After 180 seconds without button activity, confirm that both navigation
+   buttons are disabled and an expiration notice asks you to run `/commands`
+   again. Run it again to open a new reference.
 4. Run `/ping` and confirm that the response includes latency in milliseconds.
 5. Run `/roll maximum:2` and `/roll maximum:1000`. Confirm that each result
    appears in an embed and is between 1 and the specified maximum, inclusive.
@@ -221,7 +225,8 @@ manually after setup:
 8. Set your Discord language to Japanese and repeat the commands. Check the
    command descriptions, the `maximum` option description, command reference
    page titles and descriptions on all four pages, help and roll embed titles,
-   ping response, and cooldown messages.
+   ping response, and cooldown messages. Wait for the reference to time out
+   and confirm that its expiration notice is also in Japanese.
 9. Send `!help` and confirm that the bot does not respond to that prefix
    command.
 10. With the bot running, invite it to a test server with a configured system
@@ -244,8 +249,9 @@ synchronization does not affect an existing deployment.
 ## Localization and Error Handling
 
 Japanese users receive Japanese command and argument descriptions, command
-reference page titles and descriptions, help and roll embed titles, ping
-responses, and error messages. Other Discord language settings use English.
+reference page titles, descriptions, and expiration notices, help and roll
+embed titles, ping responses, and error messages. Other Discord language
+settings use English.
 Messages without a Japanese translation also use the original English text.
 The command names remain `/commands`, `/help`, `/ping`, and `/roll` in both
 languages. The `/commands` reference keeps the language of the user who
@@ -268,6 +274,8 @@ The shared slash command error handler sends error messages only to the
 user who ran the command, using a follow-up message if the interaction has
 already received a response. Unexpected command errors are logged to the
 console with tracebacks.
+HTTP failures when sending these error responses are also logged with
+tracebacks.
 
 The error handler has dedicated messages for missing permissions and
 command cooldowns, plus a general message for unexpected errors. None of

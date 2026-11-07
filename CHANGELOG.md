@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.1] - 2026-11-08
+
+### Changed
+
+- Routed startup event listener and synchronized command counts through `logging.info`.
+- Rewrote command reference descriptions and their Japanese translations using triple-quoted strings with `dedent().strip()` to improve readability while preserving the text and translation keys.
+- Added explicit type annotations to command reference state, timeout handling, and Cog initialization.
+- Updated release metadata, both README files, and manual verification instructions. Made `0.3.1` the supported release in the current series, replacing `0.3.0`.
+
+### Fixed
+
+- Disabled command reference navigation buttons after 180 seconds of inactivity and added an expiration notice in the original user's language, including Japanese, with instructions to run `/commands` again.
+- Ignored missing command reference messages during timeout updates and logged other HTTP failures with tracebacks.
+- Caught and logged HTTP failures when sending shared slash command error responses, including follow-up messages.
+
 ## [0.3.0] - 2026-11-06
 
 ### Added
