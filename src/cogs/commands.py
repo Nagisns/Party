@@ -29,7 +29,7 @@ class CommandsView(discord.ui.View):
         self._last_interaction = interaction
         return True
 
-    async def on_timeout(self):
+    async def on_timeout(self) -> None:
         async with self._page_lock:
             for item in self.children:
                 if isinstance(item, discord.ui.Button):
@@ -175,7 +175,7 @@ class CommandsView(discord.ui.View):
             await interaction.edit_original_response(embed=embed)
 
 class CommandsCog(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot: commands.Bot = bot
 
     @app_commands.command(
