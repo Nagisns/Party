@@ -3,5 +3,7 @@
         "cogs": "src",
         "events": "src",
         "translation_checker": "tools",
+        "ja":"docs",
+        "en":"docs",
     },
 }
