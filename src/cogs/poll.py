@@ -19,6 +19,7 @@ class PollCog(commands.Cog):
         option1=app_commands.locale_str("First answer option (1-55 characters)."),
         option2=app_commands.locale_str("Second answer option (1-55 characters)."),
         option3=app_commands.locale_str("Third answer option (optional, 1-55 characters)."),
+        hour=app_commands.locale_str("Poll duration in hours (1-240; default: 24)."),
     )
     @app_commands.checks.cooldown(rate=1, per=10.0)
     async def pollfunc(
@@ -28,9 +29,10 @@ class PollCog(commands.Cog):
         option1: app_commands.Range[str, 1, 55],
         option2: app_commands.Range[str, 1, 55],
         option3: Optional[app_commands.Range[str, 1, 55]],
+        hour: app_commands.Range[int, 1, 240] = 24,
         ) -> None:
 
-        poll: Poll = Poll(question=question, duration=timedelta(hours=24.0))
+        poll: Poll = Poll(question=question, duration=timedelta(hours=hour))
 
         for option in (option1, option2, option3):
             if option is not None:
