@@ -1,97 +1,112 @@
 # Party
 
-[English](README.md) | [日本語](README.ja.md)
+**English** | [日本語](README.ja.md)
 
-A Discord bot built with Python and `discord.py`, featuring slash commands
-and Japanese localization.
+**A Python Discord bot for rolling dice and checking the bot's connection latency.**
+Use slash commands to interact with it, with Japanese and English responses based on your Discord language settings.
 
-The current release is **0.3.1**. The project is in prerelease development.
-See the [changelog](CHANGELOG.md) for release history.
+Version **0.3.1** · In prerelease development · [Changelog](CHANGELOG.md)
 
-## Features
+[What you can do](#what-you-can-do) · [Getting started](#getting-started) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Documentation](#documentation)
 
-- **Command Reference:** Browse command details across four embed pages using
-  previous and next buttons.
-- **Help:** Displays an embed listing the available slash commands.
-- **Ping:** Shows the bot's WebSocket latency in milliseconds.
-- **Roll:** Rolls a die with 2 to 1000 sides and displays the result in an embed.
-- **Welcome Message:** Sends a welcome embed to the server's system channel
-  when the bot joins, if a system channel is configured and the bot has
-  permission to send it. The title and description use Japanese when the
-  server's preferred locale is Japanese, and English for other locales.
-- **Japanese Localization:** Displays command and argument descriptions and
-  responses in Japanese when the user's Discord language is set to Japanese.
-- **Error Messages:** The shared slash command error handler sends localized
-  error messages visible only to the user who ran the command.
-- **Automatic Extension Loading:** Discovers and loads command and event
-  extensions at startup.
+## What you can do
 
-## Commands
+| I want to… | Command | What it does |
+| --- | --- | --- |
+| See available commands | `/help` | Lists commands and their descriptions. |
+| Learn how commands work | `/commands` | Opens a guide with buttons to switch pages. |
+| Check the bot's connection | `/ping` | Shows WebSocket latency to Discord in milliseconds. |
+| Roll a die | `/roll` | Rolls one die with 2–1000 sides. |
 
-| Command | Description |
-|---|---|
-| `/commands` | Displays a command reference with navigation buttons. |
-| `/help` | Displays an embed listing the registered slash commands and their descriptions. |
-| `/ping` | Displays the bot's WebSocket latency in milliseconds. |
-| `/roll` | Rolls one die with the specified number of sides and displays the result in an embed. |
+The bot also sends a welcome message when it joins a server.
+This requires a configured system channel and permission for the bot to send the message there.
 
-See the [Command Guide](docs/en/COMMANDS.md) for arguments, examples,
-cooldowns, language settings, and response behavior.
+## Getting started
 
-## Requirements
+### 1. Prepare what you need
 
-- Python 3.15 or later, as specified in `pyproject.toml`
-- A Discord bot application and its bot token
-- A Discord server where you can install the bot
-- `discord.py` 2.7.1 or later
-- `python-dotenv` 1.2.4 or later
+- **Python 3.15 or later**, as specified in the [project configuration](pyproject.toml)
+- **A Discord bot and its bot token**
+- **A Discord server where you can install the bot**
 
-## Quick Start
+If you have not created and invited a bot yet, follow the [Setup Guide](docs/en/SETUP.md) first.
+Then clone or download this repository and open a terminal in **the folder containing this README**.
+Run all commands below from that folder.
 
-Clone or download this repository, then open a terminal in the project directory.
+### 2. Install the required packages
 
-1. Create a Discord bot and invite it to your server by following the
-   [Setup Guide](docs/en/SETUP.md).
-2. Install the dependencies:
+```bash
+python -m pip install "discord.py>=2.7.1" "python-dotenv>=1.2.4"
+```
 
-   ```bash
-   python -m pip install "discord.py>=2.7.1" "python-dotenv>=1.2.4"
-   ```
+If you use uv, see the alternative instructions in the [Setup Guide](docs/en/SETUP.md).
 
-3. Create `.env` in the project directory and set your bot token:
+### 3. Set your bot token
 
-   ```env
-   TOKEN=your_bot_token_here
-   ```
+Create a file named `.env` next to this README and save the following content.
+Replace `your_bot_token_here` with your own bot token.
 
-   Keep the token private and do not commit `.env` to Git.
+```env
+TOKEN=your_bot_token_here
+```
 
-4. Start the bot:
+> **Keep your token private.** Do not publish `.env` or commit it to Git.
+> This project's `.gitignore` already excludes `.env`.
 
-   ```bash
-   python src/bot.py
-   ```
+### 4. Start the bot and check it works
 
-Once the bot is running, try `/help` or `/roll maximum:6` in your server.
-For uv commands, permission settings, and environment variable behavior,
-see the [Setup Guide](docs/en/SETUP.md).
+```bash
+python src/bot.py
+```
+
+When the terminal shows `Logged in as ...`, the bot is connected to Discord.
+Run `/help` in the server where you installed it and check that the command list appears.
+Keep the program running while you use the bot.
+To stop it, press `Ctrl+C` in the terminal.
+
+## Usage
+
+Type `/` in Discord's message box and select one of Party's commands from the suggestions.
+
+**Example: roll a six-sided die**
+
+Select `/roll`, set `maximum` (the number of sides) to `6`, and send the command.
+
+```text
+/roll maximum:6
+```
+
+The result is a number from 1 to 6. `maximum` accepts **integers from 2 to 1000**.
+
+- **See the command list:** Use `/help`. The `!help` prefix command is disabled.
+- **Browse command details:** Use `/commands` and switch pages with the arrow buttons.
+  Buttons expire after 180 seconds of inactivity; run the command again to continue.
+- **Use Japanese:** Set your Discord language to Japanese. Command names stay in English.
+- **Response visibility:** Normal responses appear in the channel. Shared command error messages are visible only to the person who ran the command.
+
+See the [Command Guide](docs/en/COMMANDS.md) for cooldowns and details about language settings.
+
+## Troubleshooting
+
+| What happened? | What to check |
+| --- | --- |
+| The bot exits with a missing or empty `TOKEN` error | Check that `.env` is next to this README and that `TOKEN` has a value. |
+| Commands do not appear in Discord's suggestions | Check the startup logs, then review installation settings and command permissions in the [Setup Guide](docs/en/SETUP.md). |
+| Repeated commands return a cooldown error | Commands have usage limits. Check the [Command Guide](docs/en/COMMANDS.md#cooldowns) and wait before trying again. |
+| No welcome message arrives | Check the server's system channel setting and the bot's Send Messages and Embed Links permissions there. |
 
 ## Documentation
 
-| Guide | Contents |
-|---|---|
-| [Setup](docs/en/SETUP.md) | Bot creation, installation, permissions, environment variables, and startup. |
-| [Commands](docs/en/COMMANDS.md) | Usage, arguments, cooldowns, localization, and response visibility. |
-| [Development](docs/en/DEVELOPMENT.md) | Adding extensions, startup and error handling, and manual testing. |
+| What you need | Guide |
+| --- | --- |
+| Bot creation, invitation, permissions, and startup with uv | [Setup](docs/en/SETUP.md) |
+| Command arguments, cooldowns, language settings, and response visibility | [Commands](docs/en/COMMANDS.md) |
+| Adding command and event extensions, automatic loading, error handling, and manual testing | [Development](docs/en/DEVELOPMENT.md) |
+| Changes in each version | [Changelog](CHANGELOG.md) |
 
-## License
+## License and acknowledgements
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE)
-file for details.
-
-## Acknowledgements
-
-- [discord.py](https://discordpy.readthedocs.io/)
-- [python-dotenv](https://github.com/theskumar/python-dotenv)
+Released under the [MIT License](LICENSE).
+Built with [discord.py](https://discordpy.readthedocs.io/) and [python-dotenv](https://github.com/theskumar/python-dotenv).
 
 This README was written with assistance from ChatGPT.
