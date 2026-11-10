@@ -51,7 +51,7 @@ class CommandsView(discord.ui.View):
             except discord.HTTPException:
                 logging.exception("Failed to disable command guide buttons.")
 
-    def create_embed(self) -> discord.Embed:
+    def create_embed(self, page: int) -> discord.Embed:
         def translate(message: str) -> str:
             return translate_for_locale(self.locale, message)
 
@@ -65,7 +65,7 @@ class CommandsView(discord.ui.View):
             return embed
 
         #Home Page
-        if self.page == 0:
+        if page == 0:
             return _embed_template(
                 title=translate("Commands List"),
                 description=translate(
@@ -84,11 +84,11 @@ class CommandsView(discord.ui.View):
                         Roll a die with 2 to 1,000 sides.
                     """).strip()
                 ),
-                page=self.page + 1,
+                page=page + 1,
             )
 
         #Help Command Page
-        if self.page == 1:
+        if page == 1:
             return _embed_template(
                 title=translate("Help Command"),
                 description=translate(
@@ -105,11 +105,11 @@ class CommandsView(discord.ui.View):
                         Once every 5 seconds.
                     """).strip()
                 ),
-                page=self.page + 1,
+                page=page + 1,
             )
 
         #Ping Command Page
-        if self.page == 2:
+        if page == 2:
             return _embed_template(
                 title=translate("Ping Command"),
                 description=translate(
@@ -126,11 +126,11 @@ class CommandsView(discord.ui.View):
                         Once every 5 seconds.
                     """).strip()
                 ),
-                page=self.page + 1,
+                page=page + 1,
             )
 
         #Roll Command Page
-        if self.page == 3:
+        if page == 3:
             return _embed_template(
                 title=translate("Roll Command"),
                 description=translate(
@@ -148,38 +148,40 @@ class CommandsView(discord.ui.View):
                         Up to 3 uses every 10 seconds.
                     """).strip()
                 ),
-                page=self.page + 1,
+                page=page + 1,
             )
 
-        raise ValueError(f"Unsupported page: {self.page}")
+        raise ValueError(f"Unsupported page: {page}")
 
     @discord.ui.button(emoji="⬅️", style=discord.ButtonStyle.primary)
     async def previous_page(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
         await interaction.response.defer()
         async with self._page_lock:
 
-            self.page -= 1
+            page: int = self.page - 1
 
-            if self.page < self.MIN_PAGES:
-                self.page = self.MAX_PAGES - 1
+            if page < self.MIN_PAGES:
+                page = self.MAX_PAGES - 1
 
-            embed: discord.Embed = self.create_embed()
+            embed: discord.Embed = self.create_embed(page)
 
             await interaction.edit_original_response(embed=embed)
+            self.page = page
 
     @discord.ui.button(emoji="➡️", style=discord.ButtonStyle.primary)
     async def next_page(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
         await interaction.response.defer()
         async with self._page_lock:
 
-            self.page += 1
+            page: int = self.page + 1
 
-            if self.page == self.MAX_PAGES:
-                self.page = self.MIN_PAGES
+            if page == self.MAX_PAGES:
+                page = self.MIN_PAGES
 
-            embed: discord.Embed = self.create_embed()
+            embed: discord.Embed = self.create_embed(page)
 
             await interaction.edit_original_response(embed=embed)
+            self.page = page
 
 class CommandsCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
@@ -193,7 +195,7 @@ class CommandsCog(commands.Cog):
     async def commands(self, interaction: discord.Interaction) -> None:
 
         view: CommandsView = CommandsView(interaction)
-        embed: discord.Embed = view.create_embed()
+        embed: discord.Embed = view.create_embed(view.page)
 
         await interaction.response.send_message(embed=embed, view=view)
 
