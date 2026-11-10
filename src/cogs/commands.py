@@ -11,15 +11,13 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from mybot import MyBot
 from localization import translate_for_locale
 
 class CommandsView(discord.ui.View):
-    def __init__(self, bot: MyBot, interaction: discord.Interaction) -> None:
+    def __init__(self, interaction: discord.Interaction) -> None:
         super().__init__(timeout=180)
         self.page: int = 0
         self._page_lock: Lock = asyncio.Lock()
-        self.bot: MyBot = bot
         self.locale: discord.Locale = interaction.locale
         self._last_interaction: discord.Interaction = interaction
         self.MIN_PAGES: int = 0
@@ -185,7 +183,7 @@ class CommandsCog(commands.Cog):
     @app_commands.checks.cooldown(rate=1, per=5.0)
     async def commands(self, interaction: discord.Interaction) -> None:
 
-        view: CommandsView = CommandsView(self.bot, interaction)
+        view: CommandsView = CommandsView(interaction)
         embed: discord.Embed = view.create_embed()
 
         await interaction.response.send_message(embed=embed, view=view)
