@@ -137,6 +137,15 @@ JA_ROLL: dict[str, str] = {
     "Rolling result: {result}": "サイコロの結果: {result}"
 }
 
+JA_POLL: dict[str, str] = {
+    "Create a poll.": "投票を作成します。",
+    "Question for the poll (1-300 characters).": "投票の質問（1〜300文字）。",
+    "First answer option (1-55 characters).": "1つ目の選択肢（1〜55文字）。",
+    "Second answer option (1-55 characters).": "2つ目の選択肢（1〜55文字）。",
+    "Third answer option (optional, 1-55 characters).": "3つ目の選択肢（任意、1〜55文字）。",
+    "Poll duration in hours (1-240; default: 24).": "投票の受付時間（1〜240時間、既定値: 24）。",
+}
+
 JA_GUILD_JOIN: dict[str, str] = {
     "Thanks for inviting me!": "招待ありがとうございます！",
     (
@@ -150,7 +159,7 @@ JA_GUILD_JOIN: dict[str, str] = {
 }
 
 JA_TRANSLATIONS: dict[str, str] = (
-    JA_COMMON | JA_COMMANDS | JA_HELP | JA_PING | JA_ROLL | JA_GUILD_JOIN
+    JA_COMMON | JA_COMMANDS | JA_HELP | JA_PING | JA_ROLL | JA_POLL | JA_GUILD_JOIN
 )
 
 def translate_for_locale(locale: discord.Locale, message: str) -> str:
