@@ -12,6 +12,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from localization import translate_for_locale
+from error_handler import ErrorHandler
 
 class CommandsView(discord.ui.View):
     def __init__(self, interaction: discord.Interaction) -> None:
@@ -26,6 +27,14 @@ class CommandsView(discord.ui.View):
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         self._last_interaction = interaction
         return True
+
+    async def on_error(self, interaction: discord.Interaction, error: Exception, item: discord.ui.Item) -> None:
+        logging.error("Command guide interaction failed: %r", item, exc_info=error)
+
+        message: str = translate_for_locale(interaction.locale, "An unexpected error occurred.")
+        error_handler: ErrorHandler = ErrorHandler()
+
+        await error_handler.send_error_message(interaction, message)
 
     async def on_timeout(self) -> None:
         async with self._page_lock:
