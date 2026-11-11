@@ -1,32 +1,30 @@
+# Security Policy
+
+Party is currently in prerelease development. Use **0.4.0** for the latest
+features and fixes.
+
 ## Supported Versions
 
-This project is currently in pre-release development.
+| Version | Status | Updates |
+| --- | --- | --- |
+| **0.4.0** | Current release | Features, bug fixes, and security fixes |
+| **0.3.1** | Previous series | Security fixes only |
+| 0.3.0 and earlier | End of support | No updates |
 
-Only the latest release in the current minor series and the latest release
-in the immediately preceding minor series are supported.
+Support for the `0.2.x` series ended with the release of `0.4.0`.
 
-A newer patch release replaces the earlier releases in the same series.
-When a new minor series is released, support for the oldest series ends.
-With the release of `0.4.0`, support for the `0.2.x` series has ended.
+## Support Policy
 
-New features and general bug fixes target the current series. The previous
-series is maintained for security fixes only.
+- Only the latest patch release in the current and immediately preceding
+  minor series is supported.
+- A new patch release replaces earlier releases in the same series.
+- The current series receives features, general bug fixes, and security fixes.
+  The previous series receives security fixes only.
+- When a new minor series is released, support for the oldest supported
+  series ends.
 
-The current series is `0.4.x`; `0.3.1` receives security fixes only.
+## Security Updates
 
-| Version | Supported |
-| ------- | --------- |
-| 0.4.0   | ✅        |
-| 0.3.1   | ✅        |
-| 0.3.0   | ❌        |
-| 0.2.1   | ❌        |
-| 0.2.0   | ❌        |
-| 0.1.2   | ❌        |
-| 0.1.1   | ❌        |
-| 0.1.0   | ❌        |
-
-Security vulnerabilities will be reviewed and addressed
-on a best-effort basis.
-
-As this project is in early development, security fixes
-and response times are not guaranteed.
+Security vulnerabilities will be reviewed and addressed on a best-effort basis.
+Because Party is in early development, security fixes and response times
+are not guaranteed.
