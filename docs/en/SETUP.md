@@ -48,12 +48,20 @@ uv sync --locked --no-dev
    can restrict access. See also the
    [Discord team's explanation of command invocation permissions](https://github.com/discord/discord-api-docs/discussions/5097).
 
-For the current slash commands, no additional bot-role permissions need to
-be requested at installation (`permissions=0`). Text and embed responses
+For `/commands`, `/help`, `/ping`, and `/roll`, no additional bot-role
+permissions need to be requested at installation (`permissions=0`). Text and embed responses
 use [interaction responses](https://docs.discord.com/developers/interactions/receiving-and-responding#responding-to-an-interaction),
 whose permission rules differ from ordinary channel message sends. See
 [Discord's interaction and webhook permission notes](https://docs.discord.com/developers/change-log#changes-to-bot-permissions-for-interactions-and-webhooks).
 The bot does not need **Administrator** permission.
+
+`/poll` also uses an interaction response, with Discord's native
+[poll payload](https://docs.discord.com/developers/interactions/receiving-and-responding#interaction-callback-data-structure).
+The bot does not perform its own Send Polls permission check for the caller.
+To control who can run `/poll`, configure its
+[application command permissions](https://docs.discord.com/developers/interactions/application-commands#permissions)
+in the server's integration settings. Confirm poll creation in the intended
+channel with the accounts that will use it.
 
 To receive the welcome embed, configure a system channel in the server's
 settings and allow the bot **View Channel**, **Send Messages**, and **Embed
@@ -105,5 +113,13 @@ uv run --locked --no-dev python src/bot.py
 For extension loading and startup log details, see the [Development Guide](DEVELOPMENT.md).
 
 Once the bot is running, try `/commands`, `/help`, `/ping`, and `/roll maximum:6`
-in your server. The `!help` prefix command is disabled; use `/help` for the
-command list or `/commands` for command details.
+in your server. Also create a one-hour test poll:
+
+```text
+/poll question:Pizza? option1:Yes option2:No hour:1
+```
+
+Confirm that the poll appears with two answers. The [Command Guide](COMMANDS.md#poll)
+explains the optional third answer and duration settings.
+The `!help` prefix command is disabled; use `/help` for the full command list.
+`/commands` has five pages covering `/help`, `/ping`, `/roll`, and `/poll`.

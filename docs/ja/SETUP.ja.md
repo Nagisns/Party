@@ -49,12 +49,19 @@ uv sync --locked --no-dev
    利用が制限される場合もあります。
    [コマンド実行時の権限に関する Discord チームの説明](https://github.com/discord/discord-api-docs/discussions/5097) も参照してください。
 
-現在のスラッシュコマンドについては、インストール時に Bot ロールの追加権限を
+`/commands`、`/help`、`/ping`、`/roll` については、インストール時に Bot ロールの追加権限を
 要求する必要はありません（`permissions=0`）。テキストや埋め込みメッセージの応答には
 [インタラクションへの応答](https://docs.discord.com/developers/interactions/receiving-and-responding#responding-to-an-interaction) を使い、
 通常のチャンネルへのメッセージ送信とは異なる権限ルールが適用されます。
 [インタラクションと Webhook の権限に関する Discord の説明](https://docs.discord.com/developers/change-log#changes-to-bot-permissions-for-interactions-and-webhooks) を参照してください。
 Bot に **管理者（Administrator）** 権限を付ける必要はありません。
+
+`/poll` もインタラクションへの応答を使い、Discord 標準の
+[投票データ](https://docs.discord.com/developers/interactions/receiving-and-responding#interaction-callback-data-structure)を送信します。
+Bot 独自の処理では、実行者の「投票を作成」権限を確認していません。
+`/poll` を実行できるユーザーを制限する場合は、サーバーの連携サービス設定で
+[アプリケーションコマンドの権限](https://docs.discord.com/developers/interactions/application-commands#permissions)を設定してください。
+実際に使用するアカウントとチャンネルで、投票を作成できることも確認してください。
 
 歓迎メッセージを受け取るには、サーバー設定でシステムチャンネルを指定し、
 そのチャンネルで Bot に **チャンネルを見る（View Channel）**、
@@ -106,5 +113,14 @@ uv run --locked --no-dev python src/bot.py
 拡張機能の読み込みと起動ログの詳細は、[開発ガイド](DEVELOPMENT.ja.md)を参照してください。
 
 起動したら、サーバーで `/commands`、`/help`、`/ping`、`/roll maximum:6` を試してください。
+続いて、受付期間が 1 時間のテスト用投票を作成します。
+
+```text
+/poll question:ピザにしますか？ option1:はい option2:いいえ hour:1
+```
+
+2 つの選択肢で投票が表示されることを確認してください。
+任意の 3 つ目の選択肢や受付時間の指定は、[コマンドガイド](COMMANDS.ja.md#投票)で確認できます。
 プレフィックスコマンドの `!help` は無効です。
-コマンド一覧には `/help`、各コマンドの詳細には `/commands` を使ってください。
+全コマンドの一覧には `/help` を使ってください。
+`/commands` は `/help`、`/ping`、`/roll`、`/poll` を扱う全 5 ページのガイドです。

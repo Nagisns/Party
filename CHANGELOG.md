@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.4.0] - 2026-11-11
+
+### Added
+
+- Added `/poll` to create a single-choice Discord poll with two or three answers. Questions accept 1–300 characters, and each answer accepts 1–55 characters.
+- Added the optional `hour` parameter to set poll duration from 1 to 240 hours, with a default of 24 hours. Each user can create one poll every ten seconds.
+- Added Japanese translations for the poll command and its five parameter descriptions.
+- Added a poll detail page and table of contents entry to `/commands`, with Japanese translations, expanding the guide to five pages.
+- Added `INFO` logs for the server count, summed available member counts, and Gateway latency when the bot is ready. Non-finite latency is reported as unavailable.
+
+### Changed
+
+- Extracted application command error handling into `ErrorHandler`, sharing ephemeral message delivery and HTTP failure logging with command guide error notifications.
+- Removed the unused bot dependency from `CommandsView` and introduced `GuidePage`, an `IntEnum` that supplies named page values and the guide's page count.
+- Replaced the ready event's login `print` with a module logger and added explicit return type annotations to its initializer and setup function.
+- Split detailed documentation into English and Japanese setup, command, and development guides. Reorganized both READMEs with navigation, setup steps, examples, and troubleshooting.
+- Pinned the local development interpreter to Python 3.15.2 in `.python-version`; the project's minimum requirement remains Python 3.15.
+- Updated release metadata and documentation for `0.4.0`. The `0.4.x` series is current; `0.3.1` receives security fixes only, and support for `0.2.x` has ended.
+
+### Fixed
+
+- Added `CommandsView.on_error()` to log button interaction failures and notify the user who pressed the button in their Discord language.
+- Kept the command guide's page state unchanged when a message update fails. Navigation commits the candidate page only after a successful update, within the existing lock.
+
+### Removed
+
+- Removed the `translation_checker` submodule registration and `.gitmodules`. The local working directory is ignored by the parent repository.
+
 ## [0.3.1] - 2026-11-08
 
 ### Changed

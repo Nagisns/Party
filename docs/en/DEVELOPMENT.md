@@ -6,6 +6,17 @@
 
 Complete the [Setup Guide](SETUP.md) before adding extensions or running manual checks.
 
+## Development Environment
+
+The project's minimum Python requirement is 3.15. The
+[`.python-version`](../../.python-version) file pins Python 3.15.2 for local
+development. With uv installed, create the environment and install runtime
+and development dependencies from the lockfile:
+
+```bash
+uv sync --locked
+```
+
 ## Adding Commands
 
 Commands are organized as Cog extensions in `src/cogs/`. At startup, the bot
@@ -20,6 +31,13 @@ synchronize its commands; no changes to `src/mybot.py` are needed.
 
 Every discovered extension must provide the setup entry point. If an
 extension fails to load, startup stops before command synchronization.
+
+The command guide uses the `GuidePage` `IntEnum` in `src/cogs/commands.py`.
+`HOME` is zero and the remaining values use `auto()`. Navigation derives its
+bounds from `GuidePage.HOME.value` and `len(GuidePage)`; display branches compare
+against named members. When adding a guide page, update the enum, its display
+branch, the table of contents, and the corresponding Japanese translation keys.
+The current guide has five pages, including the home page and poll details.
 
 ## Adding Event Listeners
 
@@ -44,17 +62,42 @@ the total number of registered Cog event listeners, the number of synchronized
 commands, and the logged-in bot. The listener count includes each registered
 listener, including multiple listeners for the same event.
 The listener and synchronized command counts are written as `INFO` logs.
+The ready event uses a module logger to record `Logged in as ...`, `Servers:`,
+`Users:`, and `Gateway latency:` at the same level. Finite latency is shown in
+milliseconds to two decimal places; otherwise it is reported as `unavailable`.
+These messages can appear again after a reconnect.
+
+`Users:` is the sum of available `guild.member_count` values, including bots
+and counting members of multiple servers once per server. Servers whose count
+is `None` are skipped. It is not a unique-user count, and without the members
+intent the cached counts are not guaranteed to remain current; see
+[`Guild.member_count`](https://discordpy.readthedocs.io/en/stable/api.html#discord.Guild.member_count).
 
 Greeting permission errors are logged as warnings; other HTTP delivery
 failures are logged with tracebacks. These failures do not stop the bot from
 serving commands.
 
-The shared slash command error handler sends error messages only to the
-user who ran the command, using a follow-up message if the interaction has
+`src/error_handler.py` defines `ErrorHandler`. `src/bot.py` creates an instance
+and registers its bound `on_app_command_error` method with `bot.tree.error()`
+before startup. The shared handler sends error messages only to the user who
+ran the command, using a follow-up message if the interaction has
 already received a response. Unexpected command errors are logged to the
 console with tracebacks.
 HTTP failures when sending these error responses are also logged with
 tracebacks.
+
+`CommandsView.on_error()` handles errors from guide button callbacks and
+interaction checks. It logs the exception, translates the notification using
+the language of the user who pressed the button, and calls
+`ErrorHandler.send_error_message()`. That helper handles initial responses,
+follow-ups after `defer()`, and HTTP failures while sending the notification.
+Timeout updates keep their own handling: missing messages are ignored and
+other HTTP failures are logged.
+
+Page navigation holds a lock while calculating the candidate page, creating
+its embed, sending the update, and committing the page index. `create_embed(page)`
+uses the supplied index without modifying the current page. A failed update
+therefore leaves the current page index unchanged.
 
 The error handler has dedicated messages for missing permissions and
 command cooldowns, plus a general message for unexpected errors. None of
@@ -67,11 +110,12 @@ manually after setup:
 
 1. Start the bot and confirm that the console shows `INFO` logs reporting
    the registered event listener and synchronized command counts,
-   followed by a successful login.
+   followed by the logged-in bot, server count, summed available member counts,
+   and Gateway latency or `unavailable`.
 2. Run `/help` and confirm that the embed lists `/commands`, `/help`, `/ping`,
-   and `/roll` with their descriptions.
-3. Run `/commands` and confirm that the reference opens at `page: 1/4`.
-   Use both arrow buttons to visit all four pages, including navigation from
+   `/roll`, and `/poll` with their descriptions.
+3. Run `/commands` and confirm that the reference opens at `page: 1/5`.
+   Use both arrow buttons to visit all five pages, including navigation from
    the first page to the last and back. Check the command details and page
    numbers, and click the buttons quickly to check that updates stay consistent.
    After 180 seconds without button activity, confirm that both navigation
@@ -83,13 +127,15 @@ manually after setup:
 6. Confirm that the command picker requires `maximum` and rejects values
    below 2 or above 1000.
 7. Wait for any earlier cooldowns to expire. Run each of `/commands`, `/help`,
-   and `/ping` twice within five seconds, and `/roll` four times within ten
-   seconds. Confirm that exceeding each command's limit returns an error
+   and `/ping` twice within five seconds, `/roll` four times within ten
+   seconds, and `/poll` twice within ten seconds. Confirm that exceeding each
+   command's limit returns an error
    visible only to you.
 8. Set your Discord language to Japanese and repeat the commands. Check the
    command descriptions, the `maximum` option description, command reference
-   page titles and descriptions on all four pages, help and roll embed titles,
-   ping response, and cooldown messages. Wait for the reference to time out
+   page titles and descriptions on all five pages, help and roll embed titles,
+   ping response, poll command and all five parameter descriptions, and cooldown
+   messages. Wait for the reference to time out
    and confirm that its expiration notice is also in Japanese.
 9. Send `!help` and confirm that the bot does not respond to that prefix
    command.
@@ -102,6 +148,32 @@ manually after setup:
     send messages to the system channel. Confirm that joining produces no
     greeting in those cases and that a permission failure is logged as a
     warning. The bot should continue responding to slash commands.
+12. Create a poll with only `question`, `option1`, and `option2`. Confirm two
+    answers, a 24-hour duration, and single-choice voting. Repeat with `option3`
+    and with `hour:1` and `hour:240`; check the third answer and the end time.
+    The bot should preserve the question and answer text as entered.
+13. Check the poll input boundaries: `question` accepts 1–300 characters,
+    each answer accepts 1–55 characters, and `hour` accepts integers from 1 to 240.
+    Confirm that the question and first two answers are required, `option3` and
+    `hour` can be omitted, and the picker rejects out-of-range values.
+
+### Page Update Failure Checks
+
+Use mocked interactions in separate test code for these checks.
+
+- Make `interaction.response.defer()` succeed and
+  `interaction.edit_original_response()` raise `discord.HTTPException` once.
+  For each direction, verify that `view.page` is unchanged after the exception.
+  Let the next update succeed and confirm that it moves one page from the last
+  successful state, including first/last-page wrapping.
+- When calling a button callback directly, pass its exception to `view.on_error()`
+  explicitly; discord.py normally does this during dispatch. Check that the
+  exception is logged and an ephemeral follow-up uses the clicking user's language.
+  Also test an interaction without an initial response, where the helper should
+  use `interaction.response.send_message()`.
+- Make the notification send raise an HTTP exception and check the failure log.
+  Delay one page update while starting another; confirm the second waits for the
+  lock and uses the last successfully committed page index.
 
 When adding an extension, restart the bot and confirm that its commands or
 event listeners are registered without editing `src/mybot.py`. Check that

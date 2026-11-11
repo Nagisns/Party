@@ -2,10 +2,10 @@
 
 **English** | [日本語](README.ja.md)
 
-**A Python Discord bot for rolling dice and checking the bot's connection latency.**
+**A Python Discord bot for creating polls, rolling dice, and checking the bot's connection latency.**
 Use slash commands to interact with it, with Japanese and English responses based on your Discord language settings.
 
-Version **0.3.1** · In prerelease development · [Changelog](CHANGELOG.md)
+Version **0.4.0** · In prerelease development · [Changelog](CHANGELOG.md)
 
 [What you can do](#what-you-can-do) · [Getting started](#getting-started) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Documentation](#documentation)
 
@@ -17,6 +17,7 @@ Version **0.3.1** · In prerelease development · [Changelog](CHANGELOG.md)
 | Learn how commands work | `/commands` | Opens a guide with buttons to switch pages. |
 | Check the bot's connection | `/ping` | Shows WebSocket latency to Discord in milliseconds. |
 | Roll a die | `/roll` | Rolls one die with 2–1000 sides. |
+| Create a poll | `/poll` | Creates a single-choice poll with two or three answers, open for 1–240 hours. |
 
 The bot also sends a welcome message when it joins a server.
 This requires a configured system channel and permission for the bot to send the message there.
@@ -78,9 +79,21 @@ Select `/roll`, set `maximum` (the number of sides) to `6`, and send the command
 
 The result is a number from 1 to 6. `maximum` accepts **integers from 2 to 1000**.
 
+**Example: create a poll**
+
+Select `/poll` and enter a question and two answers. Set `hour` to `1` for a one-hour poll:
+
+```text
+/poll question:Pizza? option1:Yes option2:No hour:1
+```
+
+You can add a third answer with `option3`. If you omit `hour`, voting stays open for 24 hours.
+See the [poll instructions](docs/en/COMMANDS.md#poll) for all parameters.
+
 - **See the command list:** Use `/help`. The `!help` prefix command is disabled.
 - **Browse command details:** Use `/commands` and switch pages with the arrow buttons.
   Buttons expire after 180 seconds of inactivity; run the command again to continue.
+  The five-page guide covers `/help`, `/ping`, `/roll`, and `/poll`.
 - **Use Japanese:** Set your Discord language to Japanese. Command names stay in English.
 - **Response visibility:** Normal responses appear in the channel. Shared command error messages are visible only to the person who ran the command.
 
