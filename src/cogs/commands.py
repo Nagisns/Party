@@ -4,6 +4,7 @@
 
 import logging
 import asyncio
+from enum import IntEnum, auto
 from asyncio import Lock
 from textwrap import dedent
 
@@ -14,6 +15,13 @@ from discord.ext import commands
 from localization import translate_for_locale
 from error_handler import ErrorHandler
 
+class GuidePage(IntEnum):
+    HOME = 0
+    HELP = auto()
+    PING = auto()
+    ROLL = auto()
+    POLL = auto()
+
 class CommandsView(discord.ui.View):
     def __init__(self, interaction: discord.Interaction) -> None:
         super().__init__(timeout=180)
@@ -21,8 +29,8 @@ class CommandsView(discord.ui.View):
         self._page_lock: Lock = asyncio.Lock()
         self.locale: discord.Locale = interaction.locale
         self._last_interaction: discord.Interaction = interaction
-        self.MIN_PAGES: int = 0
-        self.MAX_PAGES: int = 5
+        self.MIN_PAGES: int = GuidePage.HOME.value
+        self.MAX_PAGES: int = len(GuidePage)
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         self._last_interaction = interaction
@@ -64,8 +72,7 @@ class CommandsView(discord.ui.View):
             embed.set_footer(text=f"page: {page}/{self.MAX_PAGES}")
             return embed
 
-        #Home Page
-        if page == 0:
+        if page == GuidePage.HOME:
             return _embed_template(
                 title=translate("Commands List"),
                 description=translate(
@@ -90,8 +97,7 @@ class CommandsView(discord.ui.View):
                 page=page + 1,
             )
 
-        #Help Command Page
-        if page == 1:
+        if page == GuidePage.HELP:
             return _embed_template(
                 title=translate("Help Command"),
                 description=translate(
@@ -111,8 +117,7 @@ class CommandsView(discord.ui.View):
                 page=page + 1,
             )
 
-        #Ping Command Page
-        if page == 2:
+        if page == GuidePage.PING:
             return _embed_template(
                 title=translate("Ping Command"),
                 description=translate(
@@ -132,8 +137,7 @@ class CommandsView(discord.ui.View):
                 page=page + 1,
             )
 
-        #Roll Command Page
-        if page == 3:
+        if page == GuidePage.ROLL:
             return _embed_template(
                 title=translate("Roll Command"),
                 description=translate(
@@ -154,8 +158,7 @@ class CommandsView(discord.ui.View):
                 page=page + 1,
             )
 
-        #Poll Command Page
-        if page == 4:
+        if page == GuidePage.POLL:
             return _embed_template(
                 title=translate("Poll Command"),
                 description=translate(
