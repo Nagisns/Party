@@ -30,6 +30,9 @@ JA_COMMANDS: dict[str, str] = {
 
         **3. `/roll`**
         Roll a die with 2 to 1,000 sides.
+
+        **4. `/poll`**
+        Create a poll with two or three answers.
     """).strip(): dedent("""
         下のボタンでコマンドの詳細を確認できます。
 
@@ -43,6 +46,9 @@ JA_COMMANDS: dict[str, str] = {
 
         **3. `/roll`**
         2〜1,000面のサイコロを1回振ります。
+
+        **4. `/poll`**
+        2〜3個の選択肢で投票を作成します。
     """).strip(),
     "Help Command": "/help コマンド",
     dedent("""
@@ -117,6 +123,38 @@ JA_COMMANDS: dict[str, str] = {
 
         **クールダウン**
         10秒間に最大3回使用できます。
+    """).strip(),
+    "Poll Command": "/poll コマンド",
+    dedent("""
+        Create a poll with two or three answers.
+
+        **Response**
+        A Discord poll where each voter can select one answer.
+
+        **Parameters**
+        `question` (required): Question, from 1 to 300 characters.
+        `option1` (required): First answer, from 1 to 55 characters.
+        `option2` (required): Second answer, from 1 to 55 characters.
+        `option3` (optional): Third answer, from 1 to 55 characters.
+        `hour` (optional): Duration, from 1 to 240 hours. Defaults to 24.
+
+        **Cooldown**
+        Once every 10 seconds.
+    """).strip(): dedent("""
+        2〜3個の選択肢で投票を作成します。
+
+        **応答**
+        各ユーザーが選択肢を1つ選べるDiscordの投票を表示します。
+
+        **引数**
+        `question`（必須）: 質問。1〜300文字で指定します。
+        `option1`（必須）: 1つ目の選択肢。1〜55文字で指定します。
+        `option2`（必須）: 2つ目の選択肢。1〜55文字で指定します。
+        `option3`（任意）: 3つ目の選択肢。1〜55文字で指定します。
+        `hour`（任意）: 受付時間。1〜240時間で指定します。省略すると24時間です。
+
+        **クールダウン**
+        10秒に1回使用できます。
     """).strip(),
 }
 

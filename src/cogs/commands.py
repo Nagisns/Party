@@ -22,7 +22,7 @@ class CommandsView(discord.ui.View):
         self.locale: discord.Locale = interaction.locale
         self._last_interaction: discord.Interaction = interaction
         self.MIN_PAGES: int = 0
-        self.MAX_PAGES: int = 4
+        self.MAX_PAGES: int = 5
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         self._last_interaction = interaction
@@ -82,6 +82,9 @@ class CommandsView(discord.ui.View):
 
                         **3. `/roll`**
                         Roll a die with 2 to 1,000 sides.
+
+                        **4. `/poll`**
+                        Create a poll with two or three answers.
                     """).strip()
                 ),
                 page=page + 1,
@@ -146,6 +149,31 @@ class CommandsView(discord.ui.View):
 
                         **Cooldown**
                         Up to 3 uses every 10 seconds.
+                    """).strip()
+                ),
+                page=page + 1,
+            )
+
+        #Poll Command Page
+        if page == 4:
+            return _embed_template(
+                title=translate("Poll Command"),
+                description=translate(
+                    dedent("""
+                        Create a poll with two or three answers.
+
+                        **Response**
+                        A Discord poll where each voter can select one answer.
+
+                        **Parameters**
+                        `question` (required): Question, from 1 to 300 characters.
+                        `option1` (required): First answer, from 1 to 55 characters.
+                        `option2` (required): Second answer, from 1 to 55 characters.
+                        `option3` (optional): Third answer, from 1 to 55 characters.
+                        `hour` (optional): Duration, from 1 to 240 hours. Defaults to 24.
+
+                        **Cooldown**
+                        Once every 10 seconds.
                     """).strip()
                 ),
                 page=page + 1,
