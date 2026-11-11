@@ -1,9 +1,19 @@
+<div align="center">
+
 # Party
 
 **English** | [日本語](README.ja.md)
 
-**A Python Discord bot for creating polls, rolling dice, and checking the bot's connection latency.**
-Use slash commands to interact with it, with Japanese and English responses based on your Discord language settings.
+A Discord bot built with discord.py, featuring slash commands
+for polls, dice rolls, latency checks, and an interactive command guide.
+Responds in Japanese or English based on your Discord language settings.
+
+![Python](https://img.shields.io/badge/Python-3.15-3776AB?logo=python&logoColor=white)
+![discord.py](https://img.shields.io/badge/discord.py-5865F2?logo=discord&logoColor=white)
+![python-dotenv](https://img.shields.io/badge/python--dotenv-ECD53F?logo=dotenv&logoColor=black)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+
+</div>
 
 Version **0.4.0** · In prerelease development · [Changelog](CHANGELOG.md)
 

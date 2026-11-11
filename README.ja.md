@@ -1,9 +1,19 @@
+<div align="center">
+
 # Party
 
 [English](README.md) | **日本語**
 
-**Discord で投票を作成したり、サイコロを振ったり、Bot の応答速度を確認したりできる、Python 製の Bot です。**
+discord.py で作られた Discord Bot です。
+投票、サイコロ、応答速度の確認、ページ切り替え式のコマンドガイドを提供します。
 スラッシュコマンドで操作でき、Discord の言語設定に合わせて日本語・英語で応答します。
+
+![Python](https://img.shields.io/badge/Python-3.15-3776AB?logo=python&logoColor=white)
+![discord.py](https://img.shields.io/badge/discord.py-5865F2?logo=discord&logoColor=white)
+![python-dotenv](https://img.shields.io/badge/python--dotenv-ECD53F?logo=dotenv&logoColor=black)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+
+</div>
 
 バージョン **0.4.0** · プレリリースとして開発中 · [変更履歴](CHANGELOG.md)
 
