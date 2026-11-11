@@ -8,27 +8,29 @@ import sys
 import discord
 from dotenv import load_dotenv
 
-from mybot import MyBot
 from error_handler import ErrorHandler
+from mybot import MyBot
 
-load_dotenv()
+def main() -> None:
+    load_dotenv()
 
-try:
-    TOKEN: str = os.environ["TOKEN"]
+    token = os.getenv("TOKEN")
 
-    if not TOKEN.strip():
-        print("The TOKEN environment variable is empty.")
-        sys.exit(1)
+    if token is None:
+        sys.exit("The TOKEN environment variable is not set.")
 
-except KeyError:
-    print("The TOKEN environment variable is not set.")
-    sys.exit(1)
+    if not token.strip():
+        sys.exit("The TOKEN environment variable is empty.")
 
-intents: discord.Intents = discord.Intents.default()
-bot: MyBot = MyBot(command_prefix="!", intents=intents, help_command=None)
+    intents = discord.Intents.default()
+    intents.message_content = True
 
-error_handler: ErrorHandler = ErrorHandler()
-bot.tree.error(error_handler.on_app_command_error)
+    bot = MyBot(command_prefix="!", intents=intents,help_command=None)
+
+    error_handler = ErrorHandler()
+    bot.tree.error(error_handler.on_app_command_error)
+
+    bot.run(token, root_logger=True)
 
 if __name__ == "__main__":
-    bot.run(TOKEN, root_logger=True)
+    main()
