@@ -13,6 +13,13 @@ import cogs
 from localization import JapaneseTranslator
 
 class MyBot(commands.Bot):
+    @property
+    def event_count(self) -> int:
+        return sum(
+            len(cog.get_listeners())
+            for cog in self.cogs.values()
+        )
+
     async def setup_hook(self) -> None:
         def _get_extensions(package: ModuleType) -> list[str]:
             return sorted(
@@ -34,11 +41,7 @@ class MyBot(commands.Bot):
 
         await self.tree.set_translator(JapaneseTranslator())
 
-        event_count: int = sum(
-            len(cog.get_listeners())
-            for cog in self.cogs.values()
-        )
-        logging.info(f"Registered {event_count} event listeners.")
+        logging.info(f"Registered {self.event_count} event listeners.")
 
         synced = await self.tree.sync()
         logging.info(f"Synced {len(synced)} commands.")
