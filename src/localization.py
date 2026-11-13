@@ -22,32 +22,38 @@ JA_COMMANDS: dict[str, str] = {
 
         **Table of Contents**
 
-        **1. `/help`**
+        **1. Home Page**
+        This page.
+
+        **2. `/help`**
         View available commands and their descriptions.
 
-        **2. `/ping`**
+        **3. `/ping`**
         Check the bot's latency in milliseconds (ms).
 
-        **3. `/roll`**
+        **4. `/roll`**
         Roll a die with 2 to 1,000 sides.
 
-        **4. `/poll`**
+        **5. `/poll`**
         Create a poll with two or three answers.
     """).strip(): dedent("""
         下のボタンでコマンドの詳細を確認できます。
 
         **目次**
 
-        **1. `/help`**
+        **1. ホームページ**
+        このページです。
+
+        **2. `/help`**
         利用可能なコマンドとその説明を表示します。
 
-        **2. `/ping`**
+        **3. `/ping`**
         Botの応答速度をミリ秒（ms）で確認します。
 
-        **3. `/roll`**
+        **4. `/roll`**
         2〜1,000面のサイコロを1回振ります。
 
-        **4. `/poll`**
+        **5. `/poll`**
         2〜3個の選択肢で投票を作成します。
     """).strip(),
     "Help Command": "/help コマンド",
