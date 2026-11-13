@@ -81,16 +81,19 @@ class CommandsView(discord.ui.View):
 
                         **Table of Contents**
 
-                        **1. `/help`**
+                        **1. Home Page**
+                        This page.
+
+                        **2. `/help`**
                         View available commands and their descriptions.
 
-                        **2. `/ping`**
+                        **3. `/ping`**
                         Check the bot's latency in milliseconds (ms).
 
-                        **3. `/roll`**
+                        **4. `/roll`**
                         Roll a die with 2 to 1,000 sides.
 
-                        **4. `/poll`**
+                        **5. `/poll`**
                         Create a poll with two or three answers.
                     """).strip()
                 ),
