@@ -1,13 +1,14 @@
 # Security Policy
 
-Party is currently in prerelease development. Use **0.4.0** for the latest
+Party is currently in prerelease development. Use **0.4.1** for the latest
 features and fixes.
 
 ## Supported Versions
 
 | Version | Status | Updates |
 | --- | --- | --- |
-| **0.4.0** | Current release | Features, bug fixes, and security fixes |
+| **0.4.1** | Current release | Features, bug fixes, and security fixes |
+| 0.4.0 | End of support | No updates |
 | **0.3.1** | Previous series | Security fixes only |
 | 0.3.0 and earlier | End of support | No updates |
 

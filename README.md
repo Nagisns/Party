@@ -15,7 +15,7 @@ Responds in Japanese or English based on your Discord language settings.
 
 </div>
 
-Version **0.4.0** · In prerelease development · [Changelog](CHANGELOG.md)
+Version **0.4.1** · In prerelease development · [Changelog](CHANGELOG.md)
 
 [What you can do](#what-you-can-do) · [Getting started](#getting-started) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Documentation](#documentation)
 

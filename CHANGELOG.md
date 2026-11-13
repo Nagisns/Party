@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.1] - 2026-11-13
+
+### Added
+
+- Added an interactive `start.ps1` script to launch the bot through uv, with optional pytest checks, cancellation when tests fail, and confirmation before skipping tests.
+- Added pytest coverage for server count logging and command guide page state after failed message updates.
+- Added GitHub Actions tests for pushes and pull requests targeting `develop`, and configured pytest to import modules from `src`.
+
+### Changed
+
+- Moved environment loading, token validation, and bot initialization into `main()` so importing `bot` does not execute startup logic.
+- Exposed the registered Cog event listener count through the `MyBot.event_count` property.
+- Updated both README introductions with centered layouts and project badges, and clarified the security policy wording.
+- Updated release metadata and documentation for `0.4.1`. It replaces `0.4.0` as the supported release in the `0.4.x` series; `0.3.1` continues to receive security fixes only.
+
+### Fixed
+
+- Included the home page in the `/commands` table of contents and aligned its numbering with the five-page guide and footer.
+- Updated the contents translation key and Japanese text to match the revised home page and page numbers.
+
 ## [0.4.0] - 2026-11-11
 
 ### Added

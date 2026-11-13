@@ -105,8 +105,24 @@ the commands currently has custom permission checks.
 
 ## Testing
 
-This prerelease does not include an automated test suite. To check the bot
-manually after setup:
+### Automated Tests
+
+The pytest suite in `tests/` checks server count logging and command guide
+page state after failed message updates in both navigation directions.
+After installing the development dependencies as described above, run this
+command from the project root:
+
+```bash
+uv run --locked pytest -v
+```
+
+GitHub Actions runs the suite on pushes to `develop` and pull requests
+targeting `develop`. The tests use mocked bot and interaction objects.
+Use the manual checks below to verify behavior in Discord.
+
+### Manual Checks
+
+After setup, check the bot manually:
 
 1. Start the bot and confirm that the console shows `INFO` logs reporting
    the registered event listener and synchronized command counts,
