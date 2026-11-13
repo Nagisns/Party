@@ -17,7 +17,7 @@ Responds in Japanese or English based on your Discord language settings.
 
 Version **0.4.1** · In prerelease development · [Changelog](CHANGELOG.md)
 
-[What you can do](#what-you-can-do) · [Getting started](#getting-started) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Documentation](#documentation)
+[What you can do](#what-you-can-do) · [Getting started](#getting-started) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Project Structure](#project-structure) · [Documentation](#documentation)
 
 ## What you can do
 
@@ -117,6 +117,46 @@ See the [Command Guide](docs/en/COMMANDS.md) for cooldowns and details about lan
 | Commands do not appear in Discord's suggestions | Check the startup logs, then review installation settings and command permissions in the [Setup Guide](docs/en/SETUP.md). |
 | Repeated commands return a cooldown error | Commands have usage limits. Check the [Command Guide](docs/en/COMMANDS.md#cooldowns) and wait before trying again. |
 | No welcome message arrives | Check the server's system channel setting and the bot's Send Messages and Embed Links permissions there. |
+
+## Project Structure
+
+The main files and directories are organized as follows:
+
+```text
+Party/
+├── .github/
+│   └── workflows/
+│       └── tests.yml     # Runs pytest with GitHub Actions
+├── docs/
+│   ├── en/              # Setup, command, and development guides in English
+│   └── ja/              # Japanese versions of the guides
+├── src/
+│   ├── bot.py           # Entry point, token loading, and bot startup
+│   ├── mybot.py         # Bot class, extension loading, and command synchronization
+│   ├── error_handler.py # Shared slash command error handling
+│   ├── localization.py  # Japanese translations and locale helpers
+│   ├── cogs/            # Slash command extensions
+│   │   ├── commands.py  # Interactive command guide
+│   │   ├── help.py      # Command list
+│   │   ├── ping.py      # Latency check
+│   │   ├── poll.py      # Poll creation
+│   │   └── roll.py      # Dice rolls
+│   └── events/          # Event listener extensions
+│       ├── guild_join.py # Welcome message when joining a server
+│       └── ready.py     # Connection and server statistics logging
+├── tests/               # Automated tests for event logging and command navigation
+├── .python-version      # Python version used for local development
+├── pyproject.toml       # Project metadata, dependencies, and pytest settings
+├── uv.lock              # Locked dependency versions for uv
+├── start.ps1            # PowerShell launcher with an optional pytest run
+├── README.md            # English README
+├── README.ja.md         # Japanese README
+├── CHANGELOG.md         # Version history
+├── SECURITY.md          # Security policy
+└── LICENSE              # MIT License
+```
+
+For details on adding commands and event listeners, see the [Development Guide](docs/en/DEVELOPMENT.md).
 
 ## Documentation
 
