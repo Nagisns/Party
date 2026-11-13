@@ -23,7 +23,6 @@ def main() -> None:
         sys.exit("The TOKEN environment variable is empty.")
 
     intents = discord.Intents.default()
-    intents.message_content = True
 
     bot = MyBot(command_prefix="!", intents=intents,help_command=None)
 
