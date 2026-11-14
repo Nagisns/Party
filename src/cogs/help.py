@@ -18,8 +18,10 @@ class HelpCog(commands.Cog):
         embed = discord.Embed(title=translate(interaction, "Party Commands"), color=discord.Color.green())
 
         for command in self.bot.tree.get_commands():
+            if isinstance(command, app_commands.ContextMenu):
+                continue
+            
             description = translate(interaction, command.description)
-
             embed.add_field(name=command.name, value=description, inline=False)
 
         await interaction.response.send_message(embed=embed)
