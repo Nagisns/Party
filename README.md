@@ -128,32 +128,32 @@ Party/
 │   └── workflows/
 │       └── tests.yml     # Runs pytest with GitHub Actions
 ├── docs/
-│   ├── en/              # Setup, command, and development guides in English
-│   └── ja/              # Japanese versions of the guides
+│   ├── en/               # Setup, command, and development guides in English
+│   └── ja/               # Japanese versions of the guides
 ├── src/
-│   ├── bot.py           # Entry point, token loading, and bot startup
-│   ├── mybot.py         # Bot class, extension loading, and command synchronization
-│   ├── error_handler.py # Shared slash command error handling
-│   ├── localization.py  # Japanese translations and locale helpers
-│   ├── cogs/            # Slash command extensions
-│   │   ├── commands.py  # Interactive command guide
-│   │   ├── help.py      # Command list
-│   │   ├── ping.py      # Latency check
-│   │   ├── poll.py      # Poll creation
-│   │   └── roll.py      # Dice rolls
-│   └── events/          # Event listener extensions
+│   ├── bot.py            # Entry point, token loading, and bot startup
+│   ├── mybot.py          # Bot class, extension loading, and command synchronization
+│   ├── error_handler.py  # Shared slash command error handling
+│   ├── localization.py   # Japanese translations and locale helpers
+│   ├── cogs/             # Slash command extensions
+│   │   ├── commands.py   # Interactive command guide
+│   │   ├── help.py       # Command list
+│   │   ├── ping.py       # Latency check
+│   │   ├── poll.py       # Poll creation
+│   │   └── roll.py       # Dice rolls
+│   └── events/           # Event listener extensions
 │       ├── guild_join.py # Welcome message when joining a server
-│       └── ready.py     # Connection and server statistics logging
-├── tests/               # Automated tests for event logging and command navigation
-├── .python-version      # Python version used for local development
-├── pyproject.toml       # Project metadata, dependencies, and pytest settings
-├── uv.lock              # Locked dependency versions for uv
-├── start.ps1            # PowerShell launcher with an optional pytest run
-├── README.md            # English README
-├── README.ja.md         # Japanese README
-├── CHANGELOG.md         # Version history
-├── SECURITY.md          # Security policy
-└── LICENSE              # MIT License
+│       └── ready.py      # Connection and server statistics logging
+├── tests/                # Automated tests for event logging and command navigation
+├── .python-version       # Python version used for local development
+├── pyproject.toml        # Project metadata, dependencies, and pytest settings
+├── uv.lock               # Locked dependency versions for uv
+├── start.ps1             # PowerShell launcher with an optional pytest run
+├── README.md             # English README
+├── README.ja.md          # Japanese README
+├── CHANGELOG.md          # Version history
+├── SECURITY.md           # Security policy
+└── LICENSE               # MIT License
 ```
 
 For details on adding commands and event listeners, see the [Development Guide](docs/en/DEVELOPMENT.md).
