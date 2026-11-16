@@ -6,10 +6,10 @@ class ExtensionManager:
     """Manages extension discovery for Python packages.
 
     Attributes
-    -----------
-    extensions: Optional[:class:`int`]
+    ----------
+    extensions : int or None
         The number of extensions found by the most recent call to
-        :meth:`discover_extensions`. This is ``None`` before discovery.
+        `discover_extensions`. This is ``None`` before discovery.
     """
 
     def __init__(self) -> None:
@@ -17,10 +17,15 @@ class ExtensionManager:
 
     @property
     def extension_count(self) -> int:
-        """:class:`int`: The number of extensions found during the most recent discovery.
+        """Return the number of extensions found during the most recent discovery.
+
+        Returns
+        -------
+        int
+            The number of extensions found.
 
         Raises
-        -------
+        ------
         RuntimeError
             Extension discovery has not been performed yet.
         """
@@ -36,24 +41,24 @@ class ExtensionManager:
         with an underscore are ignored. Subpackages are not searched recursively,
         and a ``setup`` entry point is not required.
 
-        This updates :attr:`extensions` with the number of names found.
+        This updates `extensions` with the number of names found.
 
         Parameters
-        -----------
-        package: :class:`py:types.ModuleType`
+        ----------
+        package : types.ModuleType
             The imported Python package to search.
 
-        Raises
+        Returns
         -------
+        list of str
+            The fully qualified names of the discovered modules and subpackages,
+            sorted alphabetically.
+
+        Raises
+        ------
         TypeError
             The argument is not a module, or its ``__path__`` attribute is
             missing or ``None``.
-
-        Returns
-        --------
-        List[:class:`str`]
-            The fully qualified names of the discovered modules and subpackages,
-            sorted alphabetically.
         """
         if not isinstance(package, ModuleType):
             raise TypeError("package must be a Python module")
