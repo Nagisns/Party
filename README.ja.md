@@ -15,7 +15,7 @@ discord.py で作られた Discord Bot です。
 
 </div>
 
-バージョン **0.4.1** · プレリリースとして開発中 · [変更履歴](CHANGELOG.md)
+バージョン **0.4.2** · プレリリースとして開発中 · [変更履歴](CHANGELOG.md)
 
 [できること](#できること) · [はじめかた](#はじめかた) · [使い方](#使い方) · [困ったときは](#困ったときは) · [プロジェクト構成](#プロジェクト構成) · [詳しいドキュメント](#詳しいドキュメント)
 
@@ -128,32 +128,35 @@ Party/
 │   └── workflows/
 │       └── tests.yml     # GitHub Actions で pytest を実行
 ├── docs/
-│   ├── en/              # 英語のセットアップ・コマンド・開発ガイド
-│   └── ja/              # 日本語の各ガイド
+│   ├── en/               # 英語のセットアップ・コマンド・開発ガイド
+│   └── ja/               # 日本語の各ガイド
 ├── src/
-│   ├── bot.py           # エントリーポイント、トークンの読み込み、Bot の起動
-│   ├── mybot.py         # Bot クラス、拡張機能の読み込み、コマンドの同期
-│   ├── error_handler.py # スラッシュコマンド共通のエラー処理
-│   ├── localization.py  # 日本語訳と言語設定に応じた翻訳処理
-│   ├── cogs/            # スラッシュコマンドの拡張機能
-│   │   ├── commands.py  # ページ切り替え式のコマンドガイド
-│   │   ├── help.py      # コマンド一覧
-│   │   ├── ping.py      # 応答速度の確認
-│   │   ├── poll.py      # 投票の作成
-│   │   └── roll.py      # サイコロ
-│   └── events/          # イベントリスナーの拡張機能
-│       ├── guild_join.py # サーバー参加時の歓迎メッセージ
-│       └── ready.py     # 接続情報とサーバー統計のログ出力
-├── tests/               # イベントのログ出力とコマンドガイドのページ移動の自動テスト
-├── .python-version      # ローカル開発で使う Python のバージョン
-├── pyproject.toml       # プロジェクト情報、依存関係、pytest の設定
-├── uv.lock              # uv 用の依存関係のバージョン固定ファイル
-├── start.ps1            # pytest の実行を選択できる PowerShell 起動スクリプト
-├── README.md            # 英語版 README
-├── README.ja.md         # 日本語版 README
-├── CHANGELOG.md         # 変更履歴
-├── SECURITY.md          # セキュリティポリシー
-└── LICENSE              # MIT ライセンス
+│   ├── bot.py            # エントリーポイント、トークンの読み込み、Bot の起動
+│   ├── mybot.py          # Bot クラス、拡張機能の読み込み、コマンドの同期
+│   ├── error_handler.py  # スラッシュコマンド共通のエラー処理
+│   ├── localization.py   # 日本語訳と言語設定に応じた翻訳処理
+│   ├── cogs/             # スラッシュコマンドの拡張機能
+│   │   ├── commands.py   # ページ切り替え式のコマンドガイド
+│   │   ├── help.py       # コマンド一覧
+│   │   ├── ping.py       # 応答速度の確認
+│   │   ├── poll.py       # 投票の作成
+│   │   └── roll.py       # サイコロ
+│   ├── events/           # イベントリスナーの拡張機能
+│   │   ├── guild_join.py # サーバー参加時の歓迎メッセージ
+│   │   └── ready.py      # 接続情報とサーバー統計のログ出力
+│   └── tools/            # 拡張機能の探索用ユーティリティ
+│       ├── __init__.py   # ExtensionManager の公開
+│       └── discovery.py  # 拡張機能の探索、パッケージの検証、探索件数の管理
+├── tests/                # イベントのログ出力とコマンドガイドのページ移動の自動テスト
+├── .python-version       # ローカル開発で使う Python のバージョン
+├── pyproject.toml        # プロジェクト情報、依存関係、pytest の設定
+├── uv.lock               # uv 用の依存関係のバージョン固定ファイル
+├── start.ps1             # pytest の実行を選択できる PowerShell 起動スクリプト
+├── README.md             # 英語版 README
+├── README.ja.md          # 日本語版 README
+├── CHANGELOG.md          # 変更履歴
+├── SECURITY.md           # セキュリティポリシー
+└── LICENSE               # MIT ライセンス
 ```
 
 コマンドやイベントリスナーの追加方法は、[開発ガイド](docs/ja/DEVELOPMENT.ja.md)を参照してください。

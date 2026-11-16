@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.2] - 2026-11-17
+
+### Changed
+
+- Extracted Cog and event extension discovery into a reusable `ExtensionManager`, adding package validation and discovery counts while preserving alphabetical ordering and exclusion of underscore-prefixed names.
+- Added project structure sections to the English and Japanese READMEs and standardized extension discovery docstrings in NumPy style.
+- Updated release metadata and documentation for `0.4.2`. It replaces `0.4.1` as the supported release in the `0.4.x` series; `0.3.1` continues to receive security fixes only.
+
+### Fixed
+
+- Excluded context menu commands from the `/help` command list to avoid accessing their missing `description` attribute.
+- Corrected the error message raised when an extension count is requested before discovery has been performed.
+
 ## [0.4.1] - 2026-11-13
 
 ### Added

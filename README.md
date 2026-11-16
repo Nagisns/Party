@@ -15,7 +15,7 @@ Responds in Japanese or English based on your Discord language settings.
 
 </div>
 
-Version **0.4.1** · In prerelease development · [Changelog](CHANGELOG.md)
+Version **0.4.2** · In prerelease development · [Changelog](CHANGELOG.md)
 
 [What you can do](#what-you-can-do) · [Getting started](#getting-started) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Project Structure](#project-structure) · [Documentation](#documentation)
 
@@ -141,9 +141,12 @@ Party/
 │   │   ├── ping.py       # Latency check
 │   │   ├── poll.py       # Poll creation
 │   │   └── roll.py       # Dice rolls
-│   └── events/           # Event listener extensions
-│       ├── guild_join.py # Welcome message when joining a server
-│       └── ready.py      # Connection and server statistics logging
+│   ├── events/           # Event listener extensions
+│   │   ├── guild_join.py # Welcome message when joining a server
+│   │   └── ready.py      # Connection and server statistics logging
+│   └── tools/            # Extension discovery utilities
+│       ├── __init__.py   # Exports ExtensionManager
+│       └── discovery.py  # Extension discovery, package validation, and counts
 ├── tests/                # Automated tests for event logging and command navigation
 ├── .python-version       # Python version used for local development
 ├── pyproject.toml        # Project metadata, dependencies, and pytest settings
