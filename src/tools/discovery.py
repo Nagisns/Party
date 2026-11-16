@@ -27,7 +27,7 @@ class ExtensionManager:
         if self.extensions is not None:
             return self.extensions
 
-        raise RuntimeError("Commands have not been synced yet.")
+        raise RuntimeError("Extension discovery has not been performed yet.")
 
     def discover_extensions(self, package: ModuleType) -> list[str]:
         """Finds extension module names in a Python package.
