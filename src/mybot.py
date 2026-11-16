@@ -20,11 +20,8 @@ class MyBot(commands.Bot):
         )
 
     async def setup_hook(self) -> None:
-        cogs_ext_mrg: ExtensionManager = ExtensionManager()
-        events_ext_mrg: ExtensionManager = ExtensionManager()
-
-        extensions_cogs: list[str] = cogs_ext_mrg.discover_extensions(cogs)
-        extensions_events: list[str] = events_ext_mrg.discover_extensions(events)
+        extensions_cogs: list[str] = ExtensionManager.discover_extensions(cogs)
+        extensions_events: list[str] = ExtensionManager.discover_extensions(events)
 
         for extension in extensions_cogs:
             await self.load_extension(extension)

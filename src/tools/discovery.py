@@ -1,6 +1,6 @@
 from pkgutil import iter_modules
 from types import ModuleType
-from typing import Any
+from typing import Any, ClassVar
 
 class ExtensionManager:
     """Manages extension discovery for Python packages.
@@ -9,11 +9,11 @@ class ExtensionManager:
     ----------
     extensions : int or None
         The number of extensions found by the most recent call to
-        `discover_extensions`. This is ``None`` before discovery.
+        `discover_extensions`, shared across instances of this class.
+        This is ``None`` before discovery.
     """
 
-    def __init__(self) -> None:
-        self.extensions: int | None = None
+    extensions: ClassVar[int | None] = None
 
     @property
     def extension_count(self) -> int:
@@ -34,7 +34,8 @@ class ExtensionManager:
 
         raise RuntimeError("Extension discovery has not been performed yet.")
 
-    def discover_extensions(self, package: ModuleType) -> list[str]:
+    @classmethod
+    def discover_extensions(cls, package: ModuleType) -> list[str]:
         """Finds extension module names in a Python package.
 
         Only direct child modules and subpackages are included. Names starting
@@ -77,6 +78,6 @@ class ExtensionManager:
             if not module.name.rsplit(".", 1)[-1].startswith("_")
         )
 
-        self.extensions = len(sync)
+        cls.extensions = len(sync)
 
         return sync
