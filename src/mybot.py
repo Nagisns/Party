@@ -3,14 +3,13 @@
 # See the LICENSE file for details.
 
 import logging
-from pkgutil import iter_modules
-from types import ModuleType
 
 from discord.ext import commands
 
 import events
 import cogs
 from localization import JapaneseTranslator
+from tools import ExtensionManager
 
 class MyBot(commands.Bot):
     @property
@@ -21,17 +20,11 @@ class MyBot(commands.Bot):
         )
 
     async def setup_hook(self) -> None:
-        def _get_extensions(package: ModuleType) -> list[str]:
-            return sorted(
-                module.name
-                for module in iter_modules(
-                    package.__path__, prefix=f"{package.__name__}."
-                )
-                if not module.name.rsplit(".", 1)[-1].startswith("_")
-            )
+        cogs_ext_mrg: ExtensionManager = ExtensionManager()
+        events_ext_mrg: ExtensionManager = ExtensionManager()
 
-        extensions_cogs: list[str] = _get_extensions(cogs)
-        extensions_events: list[str] = _get_extensions(events)
+        extensions_cogs: list[str] = cogs_ext_mrg.discover_extensions(cogs)
+        extensions_events: list[str] = events_ext_mrg.discover_extensions(events)
 
         for extension in extensions_cogs:
             await self.load_extension(extension)
