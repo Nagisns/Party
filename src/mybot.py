@@ -25,7 +25,7 @@ class MyBot(commands.Bot):
 
         await self.tree.set_translator(JapaneseTranslator())
 
-        logging.info(f"Registered {self.event_count} event listeners.")
-
         synced: list[AppCommand] = await self.tree.sync()
+
+        logging.info(f"Registered {self.event_count} event listeners.")
         logging.info(f"Synced {len(synced)} commands.")
