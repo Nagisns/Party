@@ -5,41 +5,12 @@
 from importlib import import_module
 from pkgutil import iter_modules
 from types import ModuleType
-from typing import Any, ClassVar
+from typing import Any
 
 from discord.ext import commands
 
 class ExtensionManager:
-    """Manages extension discovery for Python packages.
-
-    Attributes
-    ----------
-    extensions : int or None
-        The number of extensions found by the most recent call to
-        `discover_extensions`, shared across instances of this class.
-        This is ``None`` before discovery.
-    """
-
-    extensions: ClassVar[int | None] = None
-
-    @property
-    def extension_count(self) -> int:
-        """Return the number of extensions found during the most recent discovery.
-
-        Returns
-        -------
-        int
-            The number of extensions found.
-
-        Raises
-        ------
-        RuntimeError
-            Extension discovery has not been performed yet.
-        """
-        if self.extensions is not None:
-            return self.extensions
-
-        raise RuntimeError("Extension discovery has not been performed yet.")
+    """Manages extension discovery and loading for Python packages."""
 
     @classmethod
     def discover_extensions(cls, *packages: ModuleType) -> list[str]:
@@ -52,8 +23,7 @@ class ExtensionManager:
         Subpackage imports execute their ``__init__.py`` files. Directories
         without ``__init__.py`` are not discovered by this traversal.
 
-        This updates `extensions` with the total number of names found.
-        With no packages, returns an empty list and sets the count to zero.
+        With no packages, returns an empty list.
 
         Parameters
         ----------
@@ -101,8 +71,6 @@ class ExtensionManager:
         for package in packages:
             extensions.extend(sorted(discover(package)))
 
-        cls.extensions = len(extensions)
-
         return extensions
 
     @classmethod
@@ -115,8 +83,7 @@ class ExtensionManager:
         and an empty list is returned.
 
         Loading stops at the first error, which propagates to the caller.
-        Extensions loaded earlier in this call remain loaded. The `extensions`
-        count reflects the total discovered, even if loading fails partway.
+        Extensions loaded earlier in this call remain loaded.
 
         Parameters
         ----------
