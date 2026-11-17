@@ -23,10 +23,7 @@ class MyBot(commands.Bot):
         extensions_cogs: list[str] = ExtensionManager.discover_extensions(cogs)
         extensions_events: list[str] = ExtensionManager.discover_extensions(events)
 
-        for extension in extensions_cogs:
-            await self.load_extension(extension)
-
-        for extension in extensions_events:
+        for extension in extensions_cogs + extensions_events:
             await self.load_extension(extension)
 
         await self.tree.set_translator(JapaneseTranslator())
