@@ -20,10 +20,7 @@ class MyBot(commands.Bot):
         )
 
     async def setup_hook(self) -> None:
-        extensions: list[str] = ExtensionManager.discover_extensions(cogs, events)
-
-        for extension in extensions:
-            await self.load_extension(extension)
+        await ExtensionManager.load_extensions(self, cogs, events)
 
         await self.tree.set_translator(JapaneseTranslator())
 
