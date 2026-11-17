@@ -1,3 +1,7 @@
+# Copyright (c) 2026 Nagi(Nagisns)
+# Licensed under the MIT License.
+# See the LICENSE file for details.
+
 from importlib import import_module
 from pkgutil import iter_modules
 from types import ModuleType
