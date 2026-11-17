@@ -4,6 +4,7 @@
 
 import logging
 
+from discord.app_commands import AppCommand 
 from discord.ext import commands
 
 import events
@@ -26,5 +27,5 @@ class MyBot(commands.Bot):
 
         logging.info(f"Registered {self.event_count} event listeners.")
 
-        synced = await self.tree.sync()
+        synced: list[AppCommand] = await self.tree.sync()
         logging.info(f"Synced {len(synced)} commands.")
