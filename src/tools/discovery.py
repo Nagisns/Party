@@ -7,6 +7,8 @@ from pkgutil import iter_modules
 from types import ModuleType
 from typing import Any, ClassVar
 
+from discord.ext import commands
+
 class ExtensionManager:
     """Manages extension discovery for Python packages.
 
@@ -100,5 +102,55 @@ class ExtensionManager:
             extensions.extend(sorted(discover(package)))
 
         cls.extensions = len(extensions)
+
+        return extensions
+
+    @classmethod
+    async def load_extensions(cls, bot: commands.Bot, *packages: ModuleType) -> list[str]:
+        """Discover extensions and load them sequentially into a bot.
+
+        All module names are collected by `discover_extensions` before loading.
+        Packages are processed in argument order, with module names sorted
+        alphabetically within each package. With no packages, nothing is loaded
+        and an empty list is returned.
+
+        Loading stops at the first error, which propagates to the caller.
+        Extensions loaded earlier in this call remain loaded. The `extensions`
+        count reflects the total discovered, even if loading fails partway.
+
+        Parameters
+        ----------
+        bot : discord.ext.commands.Bot
+            The bot into which the extensions are loaded.
+        *packages : types.ModuleType
+            The imported Python packages to search, in order.
+
+        Returns
+        -------
+        list of str
+            The fully qualified module names, in loading order. Returned only
+            after all discovered extensions have loaded successfully.
+
+        Raises
+        ------
+        TypeError
+            An argument is not a module, or its ``__path__`` attribute is
+            missing or ``None``.
+        ImportError
+            A subpackage cannot be imported during discovery. Other errors
+            raised during subpackage initialization also propagate to the caller.
+        discord.ext.commands.ExtensionNotFound
+            An extension cannot be found.
+        discord.ext.commands.ExtensionAlreadyLoaded
+            An extension is already loaded into the bot.
+        discord.ext.commands.NoEntryPointError
+            An extension does not define a ``setup`` entry point.
+        discord.ext.commands.ExtensionFailed
+            An extension or its ``setup`` function raises an error during loading.
+        """
+        extensions = cls.discover_extensions(*packages)
+
+        for extension in extensions:
+            await bot.load_extension(extension)
 
         return extensions
