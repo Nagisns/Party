@@ -4,9 +4,8 @@
 
 **English** | [日本語](README.ja.md)
 
-A Discord bot built with discord.py, featuring slash commands
-for polls, dice rolls, latency checks, and an interactive command guide.
-Responds in Japanese or English based on your Discord language settings.
+Party is a Discord bot for creating polls and rolling dice with slash commands.
+It replies in Japanese when your Discord language is Japanese and in English otherwise.
 
 ![Python](https://img.shields.io/badge/Python-3.15-3776AB?logo=python&logoColor=white)
 ![discord.py](https://img.shields.io/badge/discord.py-5865F2?logo=discord&logoColor=white)
@@ -15,108 +14,58 @@ Responds in Japanese or English based on your Discord language settings.
 
 </div>
 
-Version **0.4.2** · In prerelease development · [Changelog](CHANGELOG.md)
+Version **0.4.2** (prerelease) · [Changelog](CHANGELOG.md)
 
-[What you can do](#what-you-can-do) · [Getting started](#getting-started) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Project Structure](#project-structure) · [Documentation](#documentation)
-
-## What you can do
-
-| I want to… | Command | What it does |
-| --- | --- | --- |
-| See available commands | `/help` | Lists commands and their descriptions. |
-| Learn how commands work | `/commands` | Opens a guide with buttons to switch pages. |
-| Check the bot's connection | `/ping` | Shows WebSocket latency to Discord in milliseconds. |
-| Roll a die | `/roll` | Rolls one die with 2–1000 sides. |
-| Create a poll | `/poll` | Creates a single-choice poll with two or three answers, open for 1–240 hours. |
-
-The bot also sends a welcome message when it joins a server.
-This requires a configured system channel and permission for the bot to send the message there.
+[Getting started](#getting-started) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Project structure](#project-structure)
 
 ## Getting started
 
-### 1. Prepare what you need
+You'll need Python 3.15 or later and a Discord server where you can install the bot.
+The steps below use pip. For bot creation, tokens, server invitations, or installation with uv, see the [Setup Guide](docs/en/SETUP.md).
 
-- **Python 3.15 or later**, as specified in the [project configuration](pyproject.toml)
-- **A Discord bot and its bot token**
-- **A Discord server where you can install the bot**
+1. Clone or download this repository. Open a terminal in the folder containing this README and install the dependencies.
 
-If you have not created and invited a bot yet, follow the [Setup Guide](docs/en/SETUP.md) first.
-Then clone or download this repository and open a terminal in **the folder containing this README**.
-Run all commands below from that folder.
+   ```bash
+   python -m pip install "discord.py>=2.7.1" "python-dotenv>=1.2.4"
+   ```
 
-### 2. Install the required packages
+2. Create a file named `.env` in the same folder. Replace `your_bot_token_here` with your bot token. Keep the token private. Git already ignores `.env` in this repository.
 
-```bash
-python -m pip install "discord.py>=2.7.1" "python-dotenv>=1.2.4"
-```
+   ```env
+   TOKEN=your_bot_token_here
+   ```
 
-If you use uv, see the alternative instructions in the [Setup Guide](docs/en/SETUP.md).
+3. Start the bot.
 
-### 3. Set your bot token
+   ```bash
+   python src/bot.py
+   ```
 
-Create a file named `.env` next to this README and save the following content.
-Replace `your_bot_token_here` with your own bot token.
-
-```env
-TOKEN=your_bot_token_here
-```
-
-> **Keep your token private.** Do not publish `.env` or commit it to Git.
-> This project's `.gitignore` already excludes `.env`.
-
-### 4. Start the bot and check it works
-
-```bash
-python src/bot.py
-```
-
-When the terminal shows `Logged in as ...`, the bot is connected to Discord.
-Run `/help` in the server where you installed it and check that the command list appears.
-Keep the program running while you use the bot.
-To stop it, press `Ctrl+C` in the terminal.
+When the terminal shows `Logged in as ...`, run `/help` in the server where you invited the bot.
+You should see a list of commands. Leave the bot running while you use it and press `Ctrl+C` in the terminal to stop it.
 
 ## Usage
 
-Type `/` in Discord's message box and select one of Party's commands from the suggestions.
+Type `/` in Discord's message box and select a Party command. If the command takes arguments, fill in the fields before sending it.
 
-**Example: roll a six-sided die**
+| Try in Discord | What happens |
+| --- | --- |
+| `/help` | Lists the available commands and their descriptions. |
+| `/commands` | Opens a command guide. Use the arrow buttons to turn the pages. |
+| `/ping` | Shows the bot's WebSocket latency to Discord in milliseconds. |
+| `/roll maximum:6` | Rolls one six-sided die. You can choose any whole number of sides from 2 to 1000. |
+| `/poll question:Pizza? option1:Yes option2:No hour:1` | Opens a Yes/No poll for one hour. Add `option3` for a third answer. Each voter picks one answer. |
 
-Select `/roll`, set `maximum` (the number of sides) to `6`, and send the command.
-
-```text
-/roll maximum:6
-```
-
-The result is a number from 1 to 6. `maximum` accepts **integers from 2 to 1000**.
-
-**Example: create a poll**
-
-Select `/poll` and enter a question and two answers. Set `hour` to `1` for a one-hour poll:
-
-```text
-/poll question:Pizza? option1:Yes option2:No hour:1
-```
-
-You can add a third answer with `option3`. If you omit `hour`, voting stays open for 24 hours.
-See the [poll instructions](docs/en/COMMANDS.md#poll) for all parameters.
-
-- **See the command list:** Use `/help`. The `!help` prefix command is disabled.
-- **Browse command details:** Use `/commands` and switch pages with the arrow buttons.
-  Buttons expire after 180 seconds of inactivity; run the command again to continue.
-  The five-page guide covers `/help`, `/ping`, `/roll`, and `/poll`.
-- **Use Japanese:** Set your Discord language to Japanese. Command names stay in English.
-- **Response visibility:** Normal responses appear in the channel. Shared command error messages are visible only to the person who ran the command.
-
-See the [Command Guide](docs/en/COMMANDS.md) for cooldowns and details about language settings.
+Polls can stay open for 1–240 hours. Omitting `hour` sets the duration to 24 hours. For argument details, cooldowns, and who can see responses, see the [Command Guide](docs/en/COMMANDS.md).
 
 ## Troubleshooting
 
-| What happened? | What to check |
+| Symptom | What to check |
 | --- | --- |
-| The bot exits with a missing or empty `TOKEN` error | Check that `.env` is next to this README and that `TOKEN` has a value. |
-| Commands do not appear in Discord's suggestions | Check the startup logs, then review installation settings and command permissions in the [Setup Guide](docs/en/SETUP.md). |
-| Repeated commands return a cooldown error | Commands have usage limits. Check the [Command Guide](docs/en/COMMANDS.md#cooldowns) and wait before trying again. |
-| No welcome message arrives | Check the server's system channel setting and the bot's Send Messages and Embed Links permissions there. |
+| The bot exits because `TOKEN` is missing or empty | Check the value of `TOKEN` in the `.env` file next to this README. If you also set a `TOKEN` environment variable, its value takes precedence. |
+| Commands are missing from Discord's suggestions | Look for `Synced ... commands.` in the startup logs, then check the invitation scopes and command permissions in the channel. [Setup Guide](docs/en/SETUP.md) |
+| A command returns a cooldown error | Wait before trying again. The [cooldown reference](docs/en/COMMANDS.md#cooldowns) lists how often you can use each command. |
+| No welcome message appears when the bot joins | Set a system channel for the server and grant the bot **View Channel**, **Send Messages**, and **Embed Links** in that channel. |
 
 ## Project Structure
 
@@ -160,15 +109,6 @@ Party/
 ```
 
 For details on adding commands and event listeners, see the [Development Guide](docs/en/DEVELOPMENT.md).
-
-## Documentation
-
-| What you need | Guide |
-| --- | --- |
-| Bot creation, invitation, permissions, and startup with uv | [Setup](docs/en/SETUP.md) |
-| Command arguments, cooldowns, language settings, and response visibility | [Commands](docs/en/COMMANDS.md) |
-| Adding command and event extensions, automatic loading, error handling, and manual testing | [Development](docs/en/DEVELOPMENT.md) |
-| Changes in each version | [Changelog](CHANGELOG.md) |
 
 ## License and acknowledgements
 
