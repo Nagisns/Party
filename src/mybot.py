@@ -6,11 +6,12 @@ import logging
 
 from discord.app_commands import AppCommand 
 from discord.ext import commands
+from discovery import ExtensionManager
 
 import events
 import cogs
 from localization import JapaneseTranslator
-from tools import ExtensionManager
+
 
 class MyBot(commands.Bot):
     @property

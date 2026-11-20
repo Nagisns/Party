@@ -125,6 +125,18 @@ wheels = [
 ]
 
 [[package]]
+name = "discord-extension-discovery"
+version = "1.0.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "discord-py" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/13/e5/3375466d5d8e6b5e19cc8440ff61748fa62ad5a9beaeb1512e615c8ecedb/discord_extension_discovery-1.0.3.tar.gz", hash = "sha256:c31ea097f54a9007f5e968888cfd7110730ccf11b68f736f75a1f283d3919b84", size = 7202, upload-time = "2026-11-20T23:38:31.192Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b9/08/2c9ef10b1a07e9d87963ca01158b7ac1a83d1ccd720b38e9c114226c1e7d/discord_extension_discovery-1.0.3-py3-none-any.whl", hash = "sha256:50f9b62ac973bbe6d0d6d29742516be3fc947f4c54d3273364f99fc86cb0c5be", size = 6517, upload-time = "2026-11-20T23:38:30.53Z" },
+]
+
+[[package]]
 name = "discord-py"
 version = "2.7.1"
 source = { registry = "https://pypi.org/simple" }
@@ -230,6 +242,7 @@ name = "party"
 version = "0.4.2"
 source = { virtual = "." }
 dependencies = [
+    { name = "discord-extension-discovery" },
     { name = "discord-py" },
     { name = "python-dotenv" },
 ]
@@ -241,6 +254,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "discord-extension-discovery", specifier = "==1.0.3" },
     { name = "discord-py", specifier = ">=2.7.1" },
     { name = "python-dotenv", specifier = ">=1.2.4" },
 ]
