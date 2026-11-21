@@ -6,7 +6,7 @@
 
 ## 必要なもの
 
-- Python 3.15 以降（`pyproject.toml` で指定）
+- Python 3.15 系（`pyproject.toml` で指定）
 - Discord Bot のアプリケーションと、その Bot トークン
 - Bot を追加できる Discord サーバー
 - `discord.py` 2.7.1 以降

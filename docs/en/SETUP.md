@@ -6,7 +6,7 @@
 
 ## Requirements
 
-- Python 3.15 or later, as specified in `pyproject.toml`
+- Python 3.15.x, as specified in `pyproject.toml`
 - A Discord bot application and its bot token
 - A Discord server where you can install the bot
 - `discord.py` 2.7.1 or later

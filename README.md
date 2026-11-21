@@ -20,7 +20,7 @@ Version **0.4.3** (prerelease) · [Changelog](CHANGELOG.md)
 
 ## Getting started
 
-You'll need Python 3.15 or later and a Discord server where you can install the bot.
+You'll need Python 3.15.x and a Discord server where you can install the bot.
 The steps below use pip. For bot creation, tokens, server invitations, or installation with uv, see the [Setup Guide](docs/en/SETUP.md).
 
 1. Clone or download this repository. Open a terminal in the folder containing this README and install the dependencies.

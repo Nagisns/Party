@@ -8,7 +8,7 @@ Complete the [Setup Guide](SETUP.md) before adding extensions or running manual 
 
 ## Development Environment
 
-The project's minimum Python requirement is 3.15. The
+The project requires Python 3.15.x. The
 [`.python-version`](../../.python-version) file pins Python 3.15.2 for local
 development. With uv installed, create the environment and install runtime
 and development dependencies from the lockfile:
