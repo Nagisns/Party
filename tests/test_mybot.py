@@ -1,15 +1,21 @@
 import asyncio
+from pathlib import Path
 from unittest.mock import AsyncMock
 
 import discord
 from discord.ext import commands
 import pytest
 
+from cogs.leveling import _xp
 from localization import JapaneseTranslator
 from mybot import MyBot
 
 
-def test_setup_hook_loads_cogs_before_sync(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_setup_hook_loads_cogs_before_sync(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(_xp, "DB_FILE", tmp_path / "level.db")
+
     async def run_test() -> None:
         async with MyBot(
             command_prefix="!", intents=discord.Intents.default(), help_command=None
@@ -21,7 +27,7 @@ def test_setup_hook_loads_cogs_before_sync(monkeypatch: pytest.MonkeyPatch) -> N
                 listener_counts = {
                     name: len(listeners) for name, listeners in bot.extra_events.items()
                 }
-                assert listener_counts == {"on_guild_join": 1, "on_ready": 1}
+                assert listener_counts == {"on_guild_join": 1, "on_ready": 1, "on_message": 1}
                 assert "cogs.guide._view" not in bot.extensions
                 assert isinstance(bot.tree.translator, JapaneseTranslator)
                 return []
