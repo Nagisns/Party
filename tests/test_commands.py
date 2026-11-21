@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, MagicMock
 import discord
 import pytest
 
-from cogs.commands import CommandsView, GuidePage
+from cogs.guide._view import CommandsView, GuidePage
 
 def _create_interaction() -> MagicMock:
     interaction_mock: MagicMock = MagicMock(spec=discord.Interaction)

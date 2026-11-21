@@ -8,7 +8,6 @@ from discord.app_commands import AppCommand
 from discord.ext import commands
 from discovery import ExtensionManager
 
-import events
 import cogs
 from localization import JapaneseTranslator
 
@@ -22,7 +21,7 @@ class MyBot(commands.Bot):
         )
 
     async def setup_hook(self) -> None:
-        await ExtensionManager.load_extensions(self, cogs, events)
+        await ExtensionManager.load_extensions(self, cogs)
 
         await self.tree.set_translator(JapaneseTranslator())
 

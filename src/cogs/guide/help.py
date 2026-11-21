@@ -17,7 +17,7 @@ class HelpCog(commands.Cog):
     async def help(self, interaction: discord.Interaction) -> None:
         embed = discord.Embed(title=translate(interaction, "Party Commands"), color=discord.Color.green())
 
-        for command in self.bot.tree.get_commands():
+        for command in sorted(self.bot.tree.get_commands(), key=lambda command: command.name):
             if isinstance(command, app_commands.ContextMenu):
                 continue
             

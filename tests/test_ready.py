@@ -6,7 +6,7 @@ from unittest.mock import MagicMock
 import pytest
 from discord.ext import commands
 
-from events.ready import ReadyCog
+from cogs.diagnostics.ready import ReadyCog
 
 def test_guild_count(caplog: pytest.LogCaptureFixture) -> None:
     bot_mock: MagicMock = MagicMock(spec=commands.Bot)
