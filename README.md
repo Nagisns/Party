@@ -84,18 +84,11 @@ Party/
 │   ├── mybot.py          # Bot class, extension loading, and command synchronization
 │   ├── error_handler.py  # Shared slash command error handling
 │   ├── localization.py   # Japanese translations and locale helpers
-│   ├── cogs/             # Slash command extensions
-│   │   ├── commands.py   # Interactive command guide
-│   │   ├── help.py       # Command list
-│   │   ├── ping.py       # Latency check
-│   │   ├── poll.py       # Poll creation
-│   │   └── roll.py       # Dice rolls
-│   ├── events/           # Event listener extensions
-│   │   ├── guild_join.py # Welcome message when joining a server
-│   │   └── ready.py      # Connection and server statistics logging
-│   └── tools/            # Extension discovery utilities
-│       ├── __init__.py   # Exports ExtensionManager
-│       └── discovery.py  # Extension discovery, package validation, and counts
+│   └── cogs/             # Command and listener extensions grouped by feature
+│       ├── activities/   # /poll and /roll
+│       ├── diagnostics/  # /ping and connection logging
+│       ├── guide/        # /help and the interactive /commands guide
+│       └── guilds/       # Welcome message when the bot joins a server
 ├── tests/                # Automated tests for event logging and command navigation
 ├── .python-version       # Python version used for local development
 ├── pyproject.toml        # Project metadata, dependencies, and pytest settings

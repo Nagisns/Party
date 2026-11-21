@@ -84,18 +84,11 @@ Party/
 │   ├── mybot.py          # Bot クラス、拡張機能の読み込み、コマンドの同期
 │   ├── error_handler.py  # スラッシュコマンド共通のエラー処理
 │   ├── localization.py   # 日本語訳と言語設定に応じた翻訳処理
-│   ├── cogs/             # スラッシュコマンドの拡張機能
-│   │   ├── commands.py   # ページ切り替え式のコマンドガイド
-│   │   ├── help.py       # コマンド一覧
-│   │   ├── ping.py       # 応答速度の確認
-│   │   ├── poll.py       # 投票の作成
-│   │   └── roll.py       # サイコロ
-│   ├── events/           # イベントリスナーの拡張機能
-│   │   ├── guild_join.py # サーバー参加時の歓迎メッセージ
-│   │   └── ready.py      # 接続情報とサーバー統計のログ出力
-│   └── tools/            # 拡張機能の探索用ユーティリティ
-│       ├── __init__.py   # ExtensionManager の公開
-│       └── discovery.py  # 拡張機能の探索、パッケージの検証、探索件数の管理
+│   └── cogs/             # コマンドとイベントリスナーを機能ごとに配置
+│       ├── activities/   # /poll と /roll
+│       ├── diagnostics/  # /ping と接続情報のログ出力
+│       ├── guide/        # /help とページ切り替え式の /commands
+│       └── guilds/       # Bot がサーバーに参加したときの歓迎メッセージ
 ├── tests/                # イベントのログ出力とコマンドガイドのページ移動の自動テスト
 ├── .python-version       # ローカル開発で使う Python のバージョン
 ├── pyproject.toml        # プロジェクト情報、依存関係、pytest の設定

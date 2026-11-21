@@ -19,20 +19,21 @@ uv sync --locked
 
 ## Adding Commands
 
-Commands are organized as Cog extensions in `src/cogs/`. At startup, the bot
-discovers modules and packages directly inside `cogs` and loads them in
-alphabetical order. Names beginning with `_` are excluded, so use that prefix
-for helper modules that should not be loaded as extensions.
+Cog extensions live under `src/cogs/`, grouped by feature. For example,
+`diagnostics/` contains both `/ping` and the `on_ready` listener.
+At startup, the bot recursively searches subpackages with an `__init__.py` file
+and loads extension modules in alphabetical order by fully qualified name.
+Prefix helper modules and packages with `_` to exclude them from discovery.
 
-To add a command, create a module such as `src/cogs/example.py`, define its
-Cog and commands, and expose an `async def setup(bot)` entry point that calls
-`await bot.add_cog(...)`. Restart the bot to discover the new extension and
-synchronize its commands; no changes to `src/mybot.py` are needed.
+To add a command, create a module in its feature package, such as
+`src/cogs/diagnostics/status.py`. Define the Cog and commands and expose an
+`async def setup(bot)` entry point that calls `await bot.add_cog(...)`.
+Restart the bot to discover the new extension and synchronize its commands.
 
 Every discovered extension must provide the setup entry point. If an
 extension fails to load, startup stops before command synchronization.
 
-The command guide uses the `GuidePage` `IntEnum` in `src/cogs/commands.py`.
+The command guide uses the `GuidePage` `IntEnum` in `src/cogs/guide/_view.py`.
 `HOME` is zero and the remaining values use `auto()`. Navigation derives its
 bounds from `GuidePage.HOME.value` and `len(GuidePage)`; display branches compare
 against named members. When adding a guide page, update the enum, its display
@@ -41,26 +42,22 @@ The current guide has five pages, including the home page and poll details.
 
 ## Adding Event Listeners
 
-Event listeners are organized as Cog extensions in `src/events/`. Mark each
-listener with `commands.Cog.listener()` and expose an `async def setup(bot)`
-entry point that registers the Cog with `await bot.add_cog(...)`. Use a unique
-Cog name, and remove the original handler when moving an event from `bot.py`
-to avoid running both handlers.
+Place event listeners in the relevant feature package under `src/cogs/`.
+Mark each listener with `commands.Cog.listener()`. To register a new Cog,
+give it a unique name and expose an `async def setup(bot)` entry point that
+calls `await bot.add_cog(...)`. When moving a listener from `bot.py`, remove
+the original handler to avoid running it twice.
 
-At startup, command extensions load first, followed by event extensions.
-Modules and packages directly inside each directory load in alphabetical
-order, and names beginning with `_` are excluded. Restart the bot to discover
-new event extensions; no changes to `src/mybot.py` are needed. Event listeners
-are registered when their Cogs are added and do not require `tree.sync()`.
+Restart the bot to load the updated extension. Event listeners are registered
+when their Cogs are added.
 
 ## Startup and Error Handling
 
-During startup, the bot discovers and loads command extensions from
-`src/cogs/` and event extensions from `src/events/`, registers its Japanese
-translator, and synchronizes its global slash commands. The console reports
-the total number of registered Cog event listeners, the number of synchronized
-commands, and the logged-in bot. The listener count includes each registered
-listener, including multiple listeners for the same event.
+During startup, the bot discovers and loads extensions from `src/cogs/`,
+registers its Japanese translator, and synchronizes its global slash commands.
+The console reports the total number of registered Cog event listeners, the
+number of synchronized commands, and the logged-in bot. The listener count
+includes each registered listener, including multiple listeners for the same event.
 The listener and synchronized command counts are written as `INFO` logs.
 The ready event uses a module logger to record `Logged in as ...`, `Servers:`,
 `Users:`, and `Gateway latency:` at the same level. Finite latency is shown in
