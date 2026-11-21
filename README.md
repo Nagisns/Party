@@ -14,7 +14,7 @@ It replies in Japanese when your Discord language is Japanese and in English oth
 
 </div>
 
-Version **0.4.2** (prerelease) · [Changelog](CHANGELOG.md)
+Version **0.4.3** (prerelease) · [Changelog](CHANGELOG.md)
 
 [Getting started](#getting-started) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Project structure](#project-structure)
 

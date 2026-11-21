@@ -1,6 +1,6 @@
 [project]
 name = "party"
-version = "0.4.2"
+version = "0.4.3"
 requires-python = ">=3.15"
 dependencies = [
     "discord-extension-discovery==1.0.3",

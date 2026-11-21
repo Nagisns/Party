@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.4.3] - 2026-11-21
+
+### Changed
+
+- Replaced the local extension loader with `discord-extension-discovery` and consolidated recursive discovery under `src/cogs/`.
+- Grouped command and listener Cogs by feature. Moved the `/commands` view into a helper module and preserved the alphabetical order of `/help`.
+- Moved listener count logging to after slash command synchronization, alongside the command count.
+- Simplified the English and Japanese READMEs and updated both development guides for the new Cog layout.
+- Updated VS Code folder icons for the new Cog packages and hid `__init__.py` files in the Explorer.
+- Made `0.4.3` the supported release in the `0.4.x` series, replacing `0.4.2`. Version `0.3.1` continues to receive security fixes only.
+
 ## [0.4.2] - 2026-11-17
 
 ### Changed
