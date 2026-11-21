@@ -26,7 +26,7 @@ Python 3.15 以降と、Bot を追加できる Discord サーバーを用意し�
 1. このリポジトリをクローンまたはダウンロードし、README のあるフォルダーで次のコマンドを実行します。
 
    ```bash
-   python -m pip install "discord.py>=2.7.1" "python-dotenv>=1.2.4"
+   python -m pip install "discord-extension-discovery==1.0.3" "discord.py>=2.7.1" "python-dotenv>=1.2.4"
    ```
 
 2. 同じフォルダーに `.env` を作成し、`your_bot_token_here` を自分の Bot トークンに置き換えます。トークンは非公開にしてください。`.env` は Git の管理対象から除外されています。

@@ -22,7 +22,7 @@
 ### 2. 依存パッケージをインストールする
 
 ```bash
-python -m pip install "discord.py>=2.7.1" "python-dotenv>=1.2.4"
+python -m pip install "discord-extension-discovery==1.0.3" "discord.py>=2.7.1" "python-dotenv>=1.2.4"
 ```
 
 上記のバージョン要件は `pyproject.toml` と一致しています。

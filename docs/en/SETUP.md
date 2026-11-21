@@ -22,7 +22,7 @@ directory.
 ### 2. Install the dependencies
 
 ```bash
-python -m pip install "discord.py>=2.7.1" "python-dotenv>=1.2.4"
+python -m pip install "discord-extension-discovery==1.0.3" "discord.py>=2.7.1" "python-dotenv>=1.2.4"
 ```
 
 These version requirements match `pyproject.toml`. To install the locked

@@ -26,7 +26,7 @@ The steps below use pip. For bot creation, tokens, server invitations, or instal
 1. Clone or download this repository. Open a terminal in the folder containing this README and install the dependencies.
 
    ```bash
-   python -m pip install "discord.py>=2.7.1" "python-dotenv>=1.2.4"
+   python -m pip install "discord-extension-discovery==1.0.3" "discord.py>=2.7.1" "python-dotenv>=1.2.4"
    ```
 
 2. Create a file named `.env` in the same folder. Replace `your_bot_token_here` with your bot token. Keep the token private. Git already ignores `.env` in this repository.
