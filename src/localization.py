@@ -9,6 +9,7 @@ from discord import app_commands
 
 JA_COMMON: dict[str, str] = {
     "An unexpected error occurred.": "予期しないエラーが発生しました。",
+    "This command can only be used in a server.": "このコマンドはサーバー内でのみ使用できます。",
     "This command is on cooldown.": "このコマンドはクールダウン中です。",
     "You do not have permission to use this command.": "このコマンドを実行する権限がありません。",
 }
