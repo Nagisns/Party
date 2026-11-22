@@ -9,6 +9,7 @@
         "diagnostics": "src",
         "guide": "src",
         "guilds": "src",
+        "leveling": "src",
         "ja": "docs",
         "en": "docs"
     }
