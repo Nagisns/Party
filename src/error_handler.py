@@ -29,6 +29,8 @@ class ErrorHandler:
             message = "You do not have permission to use this command."
         elif isinstance(error, app_commands.CommandOnCooldown):
             message = "This command is on cooldown."
+        elif isinstance(error, app_commands.NoPrivateMessage):
+            message = "This command can only be used in a server."
         else:
             logging.error("Command error: %s", error, exc_info=error)
 
