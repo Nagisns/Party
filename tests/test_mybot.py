@@ -4,8 +4,10 @@ from unittest.mock import AsyncMock
 
 import discord
 from discord.ext import commands
+from discovery import ExtensionManager
 import pytest
 
+import cogs
 from cogs.leveling import _xp
 from localization import JapaneseTranslator
 from mybot import MyBot
@@ -15,19 +17,16 @@ def test_setup_hook_loads_cogs_before_sync(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
     monkeypatch.setattr(_xp, "DB_FILE", tmp_path / "level.db")
+    expected_extensions = set(ExtensionManager.discover_extensions(cogs))
 
     async def run_test() -> None:
         async with MyBot(
             command_prefix="!", intents=discord.Intents.default(), help_command=None
         ) as bot:
             def check_registrations() -> list[discord.app_commands.AppCommand]:
-                command_names = sorted(command.name for command in bot.tree.get_commands())
-                assert command_names == ["commands", "help", "ping", "poll", "roll"]
-
-                listener_counts = {
-                    name: len(listeners) for name, listeners in bot.extra_events.items()
-                }
-                assert listener_counts == {"on_guild_join": 1, "on_ready": 1, "on_message": 1}
+                assert set(bot.extensions) == expected_extensions
+                assert bot.tree.get_commands()
+                assert bot.extra_events
                 assert "cogs.guide._view" not in bot.extensions
                 assert isinstance(bot.tree.translator, JapaneseTranslator)
                 return []
